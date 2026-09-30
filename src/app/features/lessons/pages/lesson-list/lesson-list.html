@@ -1,0 +1,133 @@
+<section class="hero overflow-hidden">
+  <div class="container hero-inner row align-items-center g-5 mx-auto">
+    <div class="col-lg-6 hero-copy">
+      <span class="eyebrow"
+        ><span class="eyebrow-dot" aria-hidden="true"></span> A place to begin exploring</span
+      >
+      <h1>Every place<br />has a <em>story.</em></h1>
+      <p>
+        Follow the clues around you. Explore the history and geography that make a community feel
+        like home.
+      </p>
+      <a class="hero-cta" href="#lessons">Explore lessons <span aria-hidden="true">↗</span></a>
+      <div class="hero-note">
+        <span aria-hidden="true">✳</span> Made for curious minds, ages 8–11
+      </div>
+    </div>
+    <div class="col-lg-6"><app-map-illustration /></div>
+  </div>
+</section>
+
+<section class="lesson-section" id="lessons" aria-labelledby="lessons-heading">
+  <div class="container">
+    <div
+      class="section-heading d-flex flex-column flex-md-row justify-content-between align-items-md-end gap-3"
+    >
+      <div>
+        <span class="section-kicker">THE EXPLORER'S LIBRARY</span>
+        <h2 id="lessons-heading">Pick a path to explore<span>.</span></h2>
+        <p>Small lessons, big discoveries. Start wherever your curiosity leads.</p>
+      </div>
+      <div class="sample-pill">✦ Sample lessons</div>
+    </div>
+
+    <div
+      class="tools d-flex flex-column flex-lg-row justify-content-between gap-3 align-items-lg-center"
+    >
+      <div class="filters d-flex flex-wrap gap-2" aria-label="Filter lessons by topic">
+        @for (category of categories; track category) {
+          <button
+            type="button"
+            class="filter-button"
+            [class.selected]="activeCategory() === category"
+            [attr.aria-pressed]="activeCategory() === category"
+            (click)="activeCategory.set(category)"
+          >
+            {{ category }}
+          </button>
+        }
+      </div>
+      <label class="search-box d-flex flex-row align-items-center">
+        <span class="visually-hidden">Search lessons</span>
+        <span class="search-icon" aria-hidden="true">⌕</span>
+        <input
+          type="search"
+          placeholder="Search lessons..."
+          [value]="searchTerm()"
+          (input)="setSearch($event)"
+        />
+      </label>
+    </div>
+
+    <p class="result-count" aria-live="polite">
+      Showing {{ lessons().length }} {{ lessons().length === 1 ? 'lesson' : 'lessons' }}
+    </p>
+    <div class="row g-4">
+      @for (lesson of lessons(); track lesson.id) {
+        <div class="col-md-6 col-xl-3">
+          <a class="lesson-card h-100" [routerLink]="['/lessons', lesson.id]">
+            <div class="card-art" [class]="'card-art ' + lesson.color">
+              <span class="art-orbit"></span
+              ><span class="art-icon" aria-hidden="true">{{ lesson.illustration }}</span>
+              <span class="art-corner" aria-hidden="true">✦</span>
+            </div>
+            <div class="card-body">
+              <span class="card-category">{{ lesson.category }}</span>
+              <h3>{{ lesson.title }}</h3>
+              <p>{{ lesson.subtitle }}</p>
+              <div class="card-meta">
+                <span>◷ {{ lesson.duration }} min</span><span>{{ lesson.level }}</span
+                ><span class="card-arrow" aria-hidden="true">↗</span>
+              </div>
+            </div>
+          </a>
+        </div>
+      } @empty {
+        <div class="col-12">
+          <div class="empty-state">
+            <span aria-hidden="true">⌕</span>
+            <h3>No lessons found</h3>
+            <p>Try another word or choose a different topic.</p>
+          </div>
+        </div>
+      }
+    </div>
+  </div>
+</section>
+
+<section class="how-section" id="how-it-works" aria-labelledby="how-heading">
+  <div class="container">
+    <div class="how-panel row g-0 align-items-center">
+      <div class="col-lg-5 how-intro">
+        <span class="section-kicker">A LITTLE ADVENTURE</span>
+        <h2 id="how-heading">Look closer.<br /><em>Learn more.</em></h2>
+        <p>
+          Each lesson gives you a simple idea to explore, something to try nearby, and a quick
+          question to check what you learned.
+        </p>
+      </div>
+      <div class="col-lg-7">
+        <div class="row g-3">
+          <div class="col-sm-4">
+            <div class="step">
+              <span class="step-icon">◉</span><strong>01 · Discover</strong>
+              <p>Choose a story that sparks your interest.</p>
+            </div>
+          </div>
+          <div class="col-sm-4">
+            <div class="step">
+              <span class="step-icon">✎</span><strong>02 · Try it</strong>
+              <p>Look for clues in a place you know.</p>
+            </div>
+          </div>
+          <div class="col-sm-4">
+            <div class="step">
+              <span class="step-icon">✓</span><strong>03 · Check in</strong>
+              <p>Answer two questions and keep exploring.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

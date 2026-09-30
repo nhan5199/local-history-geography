@@ -1,0 +1,27 @@
+<div class="site-shell">
+  <header class="site-header">
+    <div class="container d-flex align-items-center justify-content-between gap-3 py-3">
+      <a class="brand d-flex align-items-center gap-2 text-decoration-none" routerLink="/" aria-label="Our Place, home">
+        <span class="brand-mark" aria-hidden="true">✦</span>
+        <span>our<span class="brand-accent">place.</span></span>
+      </a>
+      <nav class="d-flex align-items-center gap-3 gap-sm-4" aria-label="Main navigation">
+        <a class="nav-link" routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">Explore lessons</a>
+        <a class="nav-link d-none d-sm-inline" routerLink="/" fragment="how-it-works">How it works</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main-content"><router-outlet /></main>
+
+  <footer class="site-footer">
+    <div class="container d-flex flex-column flex-sm-row align-items-start align-items-sm-center justify-content-between gap-2 py-4">
+      <span class="footer-brand">our<span>place.</span></span>
+      <span>Sample lessons for curious young explorers · Ready to adapt for your community</span>
+    </div>
+  </footer>
+</div>
+
+@defer (on idle) {
+  <app-project-companion />
+}

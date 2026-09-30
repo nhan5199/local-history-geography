@@ -1,0 +1,9 @@
+@import "bootstrap/dist/css/bootstrap.min.css";
+
+:root { color-scheme: light; }
+html { scroll-behavior: smooth; }
+body { margin: 0; color: #203b3a; background: #f8f7f1; font-family: 'Trebuchet MS', Arial, sans-serif; }
+button, input { font: inherit; }
+button:focus-visible, a:focus-visible, input:focus-visible { outline: 3px solid #e69062; outline-offset: 3px; }
+::selection { background: #f6d8b6; }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }

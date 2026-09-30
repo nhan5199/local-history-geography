@@ -1,0 +1,56 @@
+@if (lesson(); as lesson) {
+  <div class="lesson-page">
+    <div class="container">
+      <nav class="crumbs" aria-label="Breadcrumb"><a routerLink="/">All lessons</a><span aria-hidden="true">›</span><span>{{ lesson.title }}</span></nav>
+      <div class="lesson-hero row g-4 align-items-center">
+        <div class="col-lg-8">
+          <span class="category-label">{{ lesson.category }} · SAMPLE LESSON</span>
+          <h1>{{ lesson.title }}<span>.</span></h1>
+          <p>{{ lesson.subtitle }}</p>
+          <div class="lesson-meta"><span>◷ {{ lesson.duration }} minute lesson</span><span>✦ {{ lesson.level }}</span></div>
+        </div>
+        <div class="col-lg-4"><div class="hero-art" [class]="'hero-art ' + lesson.color" aria-hidden="true"><span>{{ lesson.illustration }}</span></div></div>
+      </div>
+
+      <div class="lesson-layout row g-4 g-lg-5">
+        <aside class="col-lg-4">
+          <div class="goals-box"><span class="box-kicker">WHAT YOU'LL LEARN</span><h2>Little ideas to take with you</h2><ul>@for (goal of lesson.learningGoals; track goal) { <li><span aria-hidden="true">✓</span>{{ goal }}</li> }</ul></div>
+          <div class="sample-note"><span aria-hidden="true">✳</span><p>This is a sample lesson. Add verified local places, sources, and stories when you adapt it for your community.</p></div>
+        </aside>
+        <div class="col-lg-8">
+          <div class="reading-heading"><span class="box-kicker">LET'S EXPLORE</span><h2>The story starts here</h2></div>
+          @for (section of lesson.sections; track section.heading; let sectionIndex = $index) {
+            <article class="reading-card"><span class="section-number">0{{ sectionIndex + 1 }}</span><h3>{{ section.heading }}</h3><p>{{ section.body }}</p><div class="try-box"><span aria-hidden="true">✎</span><div><strong>Try it yourself</strong><p>{{ section.tryIt }}</p></div></div></article>
+          }
+
+          <section class="quiz-box" aria-labelledby="quiz-title">
+            <span class="box-kicker">QUICK CHECK</span><h2 id="quiz-title">What did you discover?</h2><p class="quiz-intro">Choose an answer for each question, then check what you learned.</p>
+            @for (question of lesson.quiz; track question.prompt; let questionIndex = $index) {
+              <fieldset class="question"><legend><span>0{{ questionIndex + 1 }}</span>{{ question.prompt }}</legend>
+                <div class="choices">
+                  @for (choice of question.choices; track choice; let choiceIndex = $index) {
+                    <button type="button" class="choice" [class.chosen]="answers()[questionIndex] === choiceIndex"
+                      [class.correct]="submitted() && choiceIndex === question.answerIndex"
+                      [class.incorrect]="submitted() && answers()[questionIndex] === choiceIndex && choiceIndex !== question.answerIndex"
+                      [attr.aria-pressed]="answers()[questionIndex] === choiceIndex" [disabled]="submitted()"
+                      (click)="choose(questionIndex, choiceIndex)"><span class="choice-letter">{{ ['A', 'B', 'C'][choiceIndex] }}</span>{{ choice }}</button>
+                  }
+                </div>
+                @if (submitted()) { <p class="explanation">{{ question.explanation }}</p> }
+              </fieldset>
+            }
+            @if (submitted()) {
+              <div class="quiz-result" role="status"><div><strong>You got {{ score() }} of {{ lesson.quiz.length }} right!</strong><p>{{ score() === lesson.quiz.length ? 'Wonderful work, explorer.' : 'Keep exploring and give it another go.' }}</p></div><button type="button" class="secondary-button" (click)="tryAgain()">Try again ↻</button></div>
+            } @else {
+              <button type="button" class="check-button" [disabled]="!allAnswered()" (click)="checkAnswers()">Check answers <span aria-hidden="true">→</span></button>
+              @if (!allAnswered()) { <p class="answer-hint">Answer both questions to check your work.</p> }
+            }
+          </section>
+          <a class="back-link" routerLink="/">← Back to all lessons</a>
+        </div>
+      </div>
+    </div>
+  </div>
+} @else {
+  <div class="container missing-lesson"><span aria-hidden="true">⌕</span><h1>We couldn't find that lesson.</h1><p>It may have moved. Head back and choose another path to explore.</p><a routerLink="/">Browse lessons →</a></div>
+}

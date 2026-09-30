@@ -1,0 +1,12 @@
+{
+  "rules": {
+    ".read": false,
+    ".write": false,
+    "lessons": {
+      ".indexOn": [
+        "published"
+      ],
+      ".read": "query.orderByChild === 'published' && query.equalTo === true && query.limitToFirst !== null && query.limitToFirst <= 100"
+    }
+  }
+}

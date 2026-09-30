@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 180" role="img" aria-labelledby="title desc">
+  <title id="title">Milo the owl explorer</title>
+  <desc id="desc">A cheerful teal owl wearing a little explorer hat, an orange scarf, and a satchel.</desc>
+  <ellipse cx="80" cy="169" rx="46" ry="6" fill="#174943" opacity=".12"/>
+
+  <!-- Feet and satchel sit behind the body. -->
+  <path d="M59 150v13m-9-3 9 3 8-2m29-11v13m-9-2 9 2 9-3" fill="none" stroke="#D77A41" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M108 114c13-1 24 7 25 19l1 16c0 7-5 12-12 12h-15c-8 0-13-5-13-12v-18c0-9 5-15 14-17Z" fill="#B87547" stroke="#704A36" stroke-width="3"/>
+  <path d="M95 136h38m-29-20c3-7 11-10 20-8" fill="none" stroke="#EBC592" stroke-width="4" stroke-linecap="round"/>
+  <path d="M108 136v8c0 4 3 6 7 6h3c4 0 7-2 7-6v-8" fill="#D89560" stroke="#704A36" stroke-width="2.5"/>
+  <circle cx="116.5" cy="142" r="2" fill="#F7DEA4"/>
+
+  <!-- Rounded owl silhouette, with small pointed ear tufts. -->
+  <path d="M34 65 29 39l22 11c9-7 19-10 29-10s20 3 29 10l22-11-5 26c8 12 12 26 12 42 0 32-25 56-58 56s-58-24-58-56c0-16 4-30 12-42Z" fill="#27877D" stroke="#174943" stroke-width="4" stroke-linejoin="round"/>
+  <path d="M31 91c-14 10-15 31-4 42 5 5 12 5 18 1l-4-29m88-14c14 10 15 31 4 42-5 5-12 5-18 1l4-29" fill="#32998B" stroke="#174943" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M52 139c8 9 17 13 28 13s20-4 28-13" fill="none" stroke="#66B5A2" stroke-width="4" stroke-linecap="round"/>
+
+  <!-- Cream face and expressive eyes. -->
+  <path d="M80 69c-8-11-26-15-37-6-13 10-12 31-1 43 9 11 25 11 38 2 13 9 29 9 38-2 11-12 12-33-1-43-11-9-29-5-37 6Z" fill="#FFF1D5" stroke="#174943" stroke-width="3" stroke-linejoin="round"/>
+  <ellipse cx="61" cy="88" rx="10" ry="12" fill="#fff"/>
+  <ellipse cx="99" cy="88" rx="10" ry="12" fill="#fff"/>
+  <circle cx="63" cy="89" r="5" fill="#203B3A"/>
+  <circle cx="97" cy="89" r="5" fill="#203B3A"/>
+  <circle cx="65" cy="87" r="1.7" fill="#fff"/>
+  <circle cx="99" cy="87" r="1.7" fill="#fff"/>
+  <path d="m80 96-7 5 7 8 7-8-7-5Z" fill="#E58B4D" stroke="#A85A31" stroke-width="2" stroke-linejoin="round"/>
+  <path d="M70 113c3 3 6 4 10 4s7-1 10-4" fill="none" stroke="#174943" stroke-width="2.5" stroke-linecap="round"/>
+  <circle cx="46" cy="104" r="4" fill="#F3B5A1" opacity=".7"/>
+  <circle cx="114" cy="104" r="4" fill="#F3B5A1" opacity=".7"/>
+
+  <!-- Scarf with a short trailing end. -->
+  <path d="M52 119c18 8 39 8 56 0l-3 15c-14 9-37 9-50 0l-3-15Z" fill="#E7784D" stroke="#9D4935" stroke-width="3" stroke-linejoin="round"/>
+  <path d="M95 133c4 12 6 22 13 28l12-5c-7-7-10-17-11-29" fill="#E7784D" stroke="#9D4935" stroke-width="3" stroke-linejoin="round"/>
+  <path d="m110 151 7-3" stroke="#F5B384" stroke-width="2.5" stroke-linecap="round"/>
+
+  <!-- Soft explorer hat, readable at launcher size. -->
+  <path d="M50 44c2-18 12-28 30-28s28 10 30 28l7 5c2 2 1 5-2 6-21 7-49 7-70 0-3-1-4-4-2-6l7-5Z" fill="#D6AA69" stroke="#704F37" stroke-width="3" stroke-linejoin="round"/>
+  <path d="M52 39c17 5 39 5 56 0l2 8c-19 6-41 6-60 0l2-8Z" fill="#765D45"/>
+  <path d="M50 53c18 6 42 6 60 0" fill="none" stroke="#F2D49B" stroke-width="2.5" stroke-linecap="round"/>
+  <path d="M69 23c7-4 16-4 23 0" fill="none" stroke="#F5DCA9" stroke-width="3" stroke-linecap="round"/>
+</svg>
