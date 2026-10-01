@@ -1,0 +1,198 @@
+:host {
+  position: absolute;
+  top: clamp(0.7rem, 2vw, 1.4rem);
+  left: clamp(0.7rem, 2vw, 1.4rem);
+  z-index: 7;
+  pointer-events: none;
+}
+.floating-menu {
+  pointer-events: auto;
+  --menu-motion: 300ms cubic-bezier(0.22, 1, 0.36, 1);
+  box-sizing: border-box;
+  width: min(270px, calc(100vw - 24px));
+  padding: 7px;
+  overflow: hidden;
+  border: 1px solid #ffffffd9;
+  border-radius: 20px;
+  background: #fbfbff;
+  box-shadow:
+    0 8px 30px #2636431c,
+    0 1px 4px #26364312;
+  // Keep layout stable while revealing the surface; resizing it reflows labels.
+  clip-path: inset(0 calc(100% - 56px) 0 0 round 20px);
+  transition: clip-path var(--menu-motion);
+}
+.floating-menu.expanded {
+  clip-path: inset(0 0 0 0 round 20px);
+}
+.menu-heading {
+  display: flex;
+  align-items: center;
+  height: 49px;
+  padding-bottom: 7px;
+  border-bottom: 1px solid #e6e8ec;
+  gap: 8px;
+}
+button,
+a {
+  -webkit-tap-highlight-color: transparent;
+}
+.menu-toggle {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 40px;
+  height: 40px;
+  border: 0;
+  border-radius: 12px;
+  color: #424858;
+  background: transparent;
+  cursor: pointer;
+  transition: background-color 160ms ease;
+}
+.menu-toggle:hover {
+  background: #edeef5;
+}
+svg {
+  flex: none;
+  width: 18px;
+  height: 18px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.7;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.menu-toggle svg {
+  width: 20px;
+  height: 20px;
+  transition: transform var(--menu-motion);
+}
+.floating-menu:not(.expanded) .menu-toggle svg {
+  transform: rotate(180deg);
+}
+.menu-label {
+  min-width: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  opacity: 0;
+  transform: translateX(-6px);
+  transition:
+    opacity 120ms ease,
+    transform var(--menu-motion);
+  pointer-events: none;
+}
+.expanded .menu-label {
+  opacity: 1;
+  transform: translateX(0);
+  transition-delay: 40ms;
+}
+.menu-brand {
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+}
+.menu-brand span {
+  display: block;
+  margin-top: 2px;
+  color: #9698a4;
+  font-size: 10px;
+  font-weight: 400;
+  letter-spacing: 0;
+}
+.menu-items {
+  display: grid;
+  gap: 5px;
+  padding-top: 10px;
+}
+.menu-item {
+  position: relative;
+  display: flex;
+  align-items: center;
+  box-sizing: border-box;
+  width: 100%;
+  height: 40px;
+  padding: 0;
+  overflow: hidden;
+  border: 0;
+  border-radius: 20px;
+  clip-path: inset(0 calc(100% - 40px) 0 0 round 20px);
+  background: transparent;
+  color: #454b58;
+  font: inherit;
+  font-size: 12px;
+  font-weight: 600;
+  text-align: left;
+  text-decoration: none;
+  cursor: pointer;
+  transition:
+    clip-path var(--menu-motion),
+    background-color 0.16s,
+    color 0.16s;
+}
+.expanded .menu-item {
+  clip-path: inset(0 0 0 0 round 20px);
+}
+.menu-item svg {
+  margin-left: 11px;
+}
+.menu-item .menu-label {
+  position: absolute;
+  left: 40px;
+  right: 8px;
+}
+.menu-item:hover {
+  background: #eceef8;
+  color: #414cd6;
+}
+.menu-item.active {
+  background: #4e5cf7;
+  color: #fff;
+  box-shadow: 0 3px 10px #4e5cf733;
+}
+.menu-divider {
+  height: 1px;
+  margin: 4px 6px;
+  background: #e6e8ec;
+}
+button:focus-visible,
+a:focus-visible {
+  outline: 2px solid #6473ed;
+  outline-offset: -2px;
+}
+@media (max-height: 420px) {
+  .floating-menu {
+    max-height: calc(100dvh - 170px);
+    overflow-y: auto;
+    scrollbar-width: thin;
+  }
+  .menu-heading {
+    height: 40px;
+  }
+  .menu-items {
+    gap: 2px;
+    padding-top: 5px;
+  }
+  .menu-item {
+    width: calc(100% - 6px);
+    height: 34px;
+    margin-inline: 3px;
+    border-radius: 17px;
+    clip-path: inset(0 calc(100% - 34px) 0 0 round 17px);
+  }
+  .expanded .menu-item {
+    clip-path: inset(0 0 0 0 round 17px);
+  }
+  .menu-item svg {
+    margin-left: 8px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .floating-menu,
+  .menu-label,
+  .menu-toggle,
+  .menu-toggle svg,
+  .menu-item {
+    transition: none;
+  }
+}

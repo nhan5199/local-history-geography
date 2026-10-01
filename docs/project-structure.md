@@ -18,13 +18,26 @@ local-history-geography/
 |   |   |-- core/
 |   |   |   `-- firebase/
 |   |   |       |-- firebase.config.ts
-|   |   |       `-- firebase.service.ts
+|   |   |       |-- firebase.service.ts
+|   |   |       |-- firebase-emulators.ts
+|   |   |       |-- realtime-database.service.ts
+|   |   |       `-- firebase-storage.service.ts
 |   |   |-- layout/
 |   |   |   `-- app-shell/
 |   |   |       |-- app-shell.ts
 |   |   |       |-- app-shell.html
 |   |   |       `-- app-shell.scss
 |   |   |-- features/
+|   |   |   |-- map/
+|   |   |   |   |-- components/
+|   |   |   |   |   |-- area-preview/
+|   |   |   |   |   `-- map-menu/
+|   |   |   |   |-- models/map-region.ts
+|   |   |   |   `-- pages/map-page/
+|   |   |   |       |-- map-page.ts
+|   |   |   |       |-- map-page.html
+|   |   |   |       |-- map-page.scss
+|   |   |   |       `-- map-page.spec.ts
 |   |   |   |-- companion/
 |   |   |   |   |-- companion.config.ts
 |   |   |   |   |-- components/project-companion/
@@ -44,7 +57,7 @@ local-history-geography/
 |   |   |       |   |-- lesson-list/
 |   |   |       |   `-- lesson-detail/
 |   |   |       `-- lessons.routes.ts
-|   |   |-- app.ts
+|   |   |-- app-root/app-root.ts
 |   |   |-- app.config.ts
 |   |   `-- app.routes.ts
 |   |-- index.html
@@ -61,6 +74,9 @@ editor settings, and TypeScript configuration files are omitted for clarity.
 
 ## Responsibilities
 
+See [Firebase service examples](firebase-services.md) for database CRUD, live
+subscriptions, file uploads/downloads, and an account-free local emulator setup.
+
 | Location | What belongs here |
 | --- | --- |
 | `core/firebase` | Firebase configuration, SDK initialization, and shared access to Database/Storage |
@@ -71,6 +87,7 @@ editor settings, and TypeScript configuration files are omitted for clarity.
 | `features/lessons/data` | Bundled sample lessons |
 | `features/lessons/data-access` | Lesson-specific database queries |
 | `features/companion` | Floating character, lesson passage retrieval, and browser read-aloud |
+| `features/map` | Interactive Đồng Nai SVG map, search, zoom, and region dialogs at `/map` |
 | `firebase` | Local Firebase rule files, referenced by `firebase.json` |
 | `public` | Files copied directly into the built application |
 | `src/styles.scss` | Bootstrap import and global styles |
@@ -84,11 +101,14 @@ the repository is ready for the later live-data integration.
 
 Root routing lazy-loads the lessons feature. Feature routing lazy-loads its pages.
 The existing URLs stay `/` for the library and `/lessons/:id` for a lesson.
+The `/map` route separately lazy-loads the Đồng Nai map; geometry is fetched from
+`public/maps/dong-nai.json`. See [map data and interaction notes](dong-nai-map.md).
 
 ## Adding code
 
 1. Add a new user-facing capability under `features/<feature-name>`.
-2. Keep each component's `.ts`, `.html`, `.scss`, and `.spec.ts` files together.
+2. Give every component its own folder; keep its `.ts`, `.html`, `.scss`, and
+   `.spec.ts` files together when present.
 3. Keep feature-specific components and queries within their feature.
 4. Introduce `shared/` only when independent features actually reuse something.
 5. Keep app-wide integrations in `core/` and domain-specific queries in a feature.

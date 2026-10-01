@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { AppShell } from './layout/app-shell/app-shell';
+import { AppShell } from '../layout/app-shell/app-shell';
 
 @Component({
   selector: 'app-root',

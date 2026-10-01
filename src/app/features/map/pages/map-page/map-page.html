@@ -1,0 +1,182 @@
+<section class="map-page" aria-labelledby="map-title">
+  <h1 id="map-title" class="visually-hidden">Bản đồ Đồng Nai</h1>
+
+  @if (loadState() === 'error') {
+    <div class="status-panel" role="alert">
+      <h2>Chưa tải được bản đồ</h2>
+      <p>Hãy kiểm tra kết nối rồi thử lại.</p>
+      <button type="button" class="primary-button" (click)="loadMap()">Thử lại</button>
+    </div>
+  } @else if (loadState() === 'loading') {
+    <div class="status-panel" role="status">
+      <span class="loader" aria-hidden="true"></span>
+      Đang tải bản đồ Đồng Nai…
+    </div>
+  } @else {
+    <div class="map-card">
+      <div
+        #mapStage
+        class="map-stage"
+        [class.menu-open]="menuOpen()"
+        (pointerleave)="hidePreview()"
+      >
+        <app-map-menu (expandedChange)="onMenuChange($event)" (action)="onMenuAction($event)" />
+        <div class="search-control">
+          <label class="search-field">
+            <span class="search-icon" aria-hidden="true">⌕</span>
+            <span class="visually-hidden">Tìm phường hoặc xã</span>
+            <input
+              #mapSearch
+              type="search"
+              autocomplete="off"
+              placeholder="Tìm phường, xã Đồng Nai"
+              [value]="query()"
+              [attr.aria-expanded]="showSearchResults()"
+              aria-controls="map-search-results"
+              (focus)="openSearch()"
+              (click)="openSearch()"
+              (input)="setQuery($event)"
+            />
+          </label>
+          @if (showSearchResults()) {
+            <div id="map-search-results" class="search-results">
+              <div class="region-list">
+                @for (region of filteredRegions(); track region.id) {
+                  <button
+                    type="button"
+                    class="region-item"
+                    [class.selected]="selectedRegion()?.id === region.id"
+                    (click)="focusRegion(region, $event)"
+                  >
+                    <span
+                      class="region-swatch"
+                      [style.background]="color(region)"
+                      aria-hidden="true"
+                    ></span>
+                    <span class="region-name">{{ region.name }}</span>
+                    <span class="region-type">{{ region.type }}</span>
+                  </button>
+                } @empty {
+                  <p class="empty-results">Không tìm thấy địa danh</p>
+                }
+              </div>
+            </div>
+          }
+        </div>
+
+        <svg
+          #mapSvg
+          class="regions-map"
+          [class.dragging]="dragging()"
+          [attr.viewBox]="viewBox()"
+          tabindex="0"
+          role="group"
+          aria-label="Bản đồ các phường và xã Đồng Nai"
+          (keydown)="onMapKeydown($event)"
+          (pointerdown)="onMapPointerDown($event)"
+          (pointermove)="onMapPointerMove($event)"
+          (pointerup)="onMapPointerUp($event)"
+          (pointercancel)="onMapPointerUp($event)"
+          (lostpointercapture)="onMapPointerUp($event)"
+          (wheel)="onMapWheel($event)"
+        >
+          @for (region of map()?.regions; track region.id) {
+            <path
+              class="region"
+              [attr.d]="region.path"
+              [attr.fill]="color(region)"
+              fill-rule="evenodd"
+              tabindex="0"
+              role="button"
+              [attr.aria-label]="region.type + ' ' + region.name + ', mã ' + region.id"
+              [attr.aria-describedby]="
+                hoverPreview()?.region?.id === region.id ? 'map-area-preview' : null
+              "
+              (pointerenter)="onRegionHover(region, $event)"
+              (pointermove)="onRegionHover(region, $event)"
+              (pointerleave)="hidePreview()"
+              (focus)="focusedId.set(region.id)"
+              (blur)="focusedId.set(null)"
+              (click)="selectRegion(region, $event)"
+              (keydown)="onRegionKeydown($event, region)"
+            />
+          }
+          @if (activeRegion(); as active) {
+            <path
+              class="region-highlight"
+              [attr.d]="active.path"
+              [attr.fill]="color(active)"
+              fill-rule="evenodd"
+              [attr.transform]="highlightTransform(active)"
+              aria-hidden="true"
+            />
+          }
+        </svg>
+
+        @if (hoverPreview(); as preview) {
+          <app-area-preview
+            [region]="preview.region"
+            [color]="color(preview.region)"
+            [style.left.px]="preview.x"
+            [style.top.px]="preview.y"
+            [style.width.px]="preview.width"
+            [style.height.px]="preview.height"
+          />
+        }
+
+        @if (selectedRegion(); as region) {
+          <div class="selection-details" aria-live="polite">
+            <div class="selection-copy">
+              <span>{{ region.type }} · {{ region.id }}</span>
+              <strong>{{ region.name }}</strong>
+            </div>
+            <button
+              type="button"
+              class="selection-close dialog-close"
+              aria-label="Đóng thông tin"
+              title="Đóng"
+              (click)="closeSelection()"
+            >
+              ×
+            </button>
+          </div>
+        }
+
+        <div class="zoom-tools" role="group" aria-label="Điều chỉnh bản đồ">
+          <button
+            type="button"
+            aria-label="Phóng to"
+            title="Phóng to"
+            [disabled]="zoom() >= 8"
+            (click)="zoomIn()"
+          >
+            +
+          </button>
+          <button
+            type="button"
+            aria-label="Thu nhỏ"
+            title="Thu nhỏ"
+            [disabled]="zoom() <= 1"
+            (click)="zoomOut()"
+          >
+            −
+          </button>
+          <button
+            type="button"
+            class="reset"
+            aria-label="Xem toàn bản đồ"
+            title="Xem toàn bản đồ"
+            (click)="resetView()"
+          >
+            ⌖
+          </button>
+        </div>
+
+        <div class="map-attribution">
+          <span>Ranh giới tham khảo</span>
+          <a [href]="map()?.sourceUrl" target="_blank" rel="noopener noreferrer">Nguồn dữ liệu</a>
+        </div>
+      </div>
+    </div>
+  }
+</section>

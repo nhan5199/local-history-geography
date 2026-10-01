@@ -1,0 +1,9 @@
+{
+  "database": { "rules": "firebase/emulators/database.rules.json" },
+  "storage": { "rules": "firebase/emulators/storage.rules" },
+  "emulators": {
+    "database": { "host": "127.0.0.1", "port": 9000 },
+    "storage": { "host": "127.0.0.1", "port": 9199 },
+    "ui": { "enabled": true, "host": "127.0.0.1", "port": 4000 }
+  }
+}
