@@ -6,6 +6,14 @@ export interface LearningQuestion {
   options: string[];
   answers: string[];
   explanation: string;
+  /** Older published sets omit this field; readers treat omission as level 1. */
+  difficulty?: number;
+}
+export interface BankQuestion extends LearningQuestion {
+  difficulty: number;
+  mode: 'questions' | 'game';
+  createdAt: number;
+  createdBy: string;
 }
 export interface QuestionSet {
   id: string;

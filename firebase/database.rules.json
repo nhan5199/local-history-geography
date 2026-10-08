@@ -49,6 +49,7 @@
             "type": { ".validate": "newData.val() === 'single' || newData.val() === 'multiple' || newData.val() === 'yesno' || newData.val() === 'order' || newData.val() === 'match' || newData.val() === 'fill'" },
             "prompt": { ".validate": "newData.isString() && newData.val().length > 0 && newData.val().length <= 500" },
             "explanation": { ".validate": "newData.isString() && newData.val().length <= 500" },
+            "difficulty": { ".validate": "newData.val() === 1 || newData.val() === 2 || newData.val() === 3 || newData.val() === 4 || newData.val() === 5" },
             "options": {
               ".validate": "newData.hasChild('0') && !newData.hasChild('10')",
               "$option": { ".validate": "$option.matches(/^[0-9]$/) && newData.isString() && newData.val().length > 0 && newData.val().length <= 160" }
@@ -61,6 +62,34 @@
           }
         },
         "$other": { ".validate": false }
+      }
+    },
+    "questionBank": {
+      "$mode": {
+        ".indexOn": ["createdAt", "difficulty"],
+        ".read": "auth != null && (auth.token.contentEditor === true || root.child('teachers').child(auth.uid).val() === true) && ($mode === 'questions' || $mode === 'game') && query.orderByChild === 'createdAt' && query.limitToFirst !== null && query.limitToFirst <= 25",
+        "$id": {
+          ".read": "auth != null && (auth.token.contentEditor === true || root.child('teachers').child(auth.uid).val() === true)",
+          ".write": "auth != null && (auth.token.contentEditor === true || root.child('teachers').child(auth.uid).val() === true) && ($mode === 'questions' || $mode === 'game') && $id.matches(/^[a-zA-Z0-9_-]{1,80}$/) && !data.exists() && newData.exists()",
+          ".validate": "newData.hasChildren(['id', 'type', 'prompt', 'answers', 'explanation', 'difficulty', 'mode', 'createdAt', 'createdBy']) && newData.child('id').val() === $id && newData.child('mode').val() === $mode && newData.child('createdBy').val() === auth.uid && ((newData.child('type').val() === 'fill' && !newData.hasChild('options')) || (newData.child('type').val() !== 'fill' && newData.hasChild('options'))) && (newData.child('type').val() === 'single' || newData.child('type').val() === 'multiple' || newData.child('type').val() === 'yesno' || ($mode === 'game' && (newData.child('type').val() === 'order' || newData.child('type').val() === 'match' || newData.child('type').val() === 'fill')))",
+          "id": { ".validate": "newData.isString() && newData.val().matches(/^[a-zA-Z0-9_-]{1,80}$/)" },
+          "type": { ".validate": "newData.val() === 'single' || newData.val() === 'multiple' || newData.val() === 'yesno' || newData.val() === 'order' || newData.val() === 'match' || newData.val() === 'fill'" },
+          "prompt": { ".validate": "newData.isString() && newData.val().length > 0 && newData.val().length <= 500" },
+          "explanation": { ".validate": "newData.isString() && newData.val().length <= 500" },
+          "difficulty": { ".validate": "newData.val() === 1 || newData.val() === 2 || newData.val() === 3 || newData.val() === 4 || newData.val() === 5" },
+          "mode": { ".validate": "newData.val() === $mode" },
+          "createdAt": { ".validate": "newData.isNumber() && newData.val() > 0 && newData.val() <= now + 300000" },
+          "createdBy": { ".validate": "newData.val() === auth.uid" },
+          "options": {
+            ".validate": "newData.hasChild('0') && !newData.hasChild('10')",
+            "$option": { ".validate": "$option.matches(/^[0-9]$/) && newData.isString() && newData.val().length > 0 && newData.val().length <= 160" }
+          },
+          "answers": {
+            ".validate": "newData.hasChild('0') && !newData.hasChild('10')",
+            "$answer": { ".validate": "$answer.matches(/^[0-9]$/) && newData.isString() && newData.val().length > 0 && newData.val().length <= 160" }
+          },
+          "$other": { ".validate": false }
+        }
       }
     },
     "lessons": {

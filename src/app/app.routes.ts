@@ -2,6 +2,11 @@ import type { Routes } from '@angular/router';
 
 export const routes: Routes = [
   {
+    path: 'teacher/bank',
+    loadComponent: () => import('./features/questions/question-bank-page').then(module => module.QuestionBankPage),
+    title: 'Ngân hàng câu hỏi · Đồng Nai ơi!',
+  },
+  {
     path: 'questions',
     loadComponent: () => import('./features/questions/questions-page').then(module => module.QuestionsPage),
     title: 'Câu hỏi ôn tập · Đồng Nai ơi!',

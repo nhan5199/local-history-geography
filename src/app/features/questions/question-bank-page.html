@@ -1,0 +1,68 @@
+<main class="bank-page">
+  <header class="hero"><div class="wrap">
+    <a routerLink="/teacher" class="back-link">← Trở về góc tạo câu hỏi</a>
+    <span class="eyebrow">✦ DÀNH CHO THẦY CÔ</span>
+    <h1>Ngân hàng câu hỏi</h1>
+    <p>Chọn câu có sẵn hoặc lấy ngẫu nhiên, xem trước rồi mới đăng bài cho học sinh.</p>
+  </div></header>
+  <div class="wrap content">
+    @if (error()) { <p class="notice error" role="alert">{{ error() }} @if (loadError() && auth.isTeacher() && !loading()) { <button type="button" class="retry" (click)="load(true)">Thử tải lại</button> }</p> }
+    @if (success()) { <p class="notice success" role="status">{{ success() }}</p> }
+    @if (!auth.ready() && !error()) {
+      <p class="panel" role="status">Đang kiểm tra tài khoản giáo viên…</p>
+    } @else if (!auth.isTeacher()) {
+      <section class="panel" aria-labelledby="access-title"><h2 id="access-title">Cần tài khoản giáo viên</h2>
+        <p>{{ auth.user() ? 'Tài khoản này chưa được cấp quyền biên tập.' : 'Đăng nhập ở góc tạo câu hỏi để xem và tạo bài từ ngân hàng.' }}</p>
+        <a class="action-link" routerLink="/teacher">Đến trang đăng nhập →</a>
+      </section>
+    } @else {
+      <section class="panel" aria-labelledby="bank-title">
+        <div class="panel-heading"><div><h2 id="bank-title">Chọn câu hỏi</h2><p>Tối đa 100 câu mỗi bài. Đổi bộ lọc sẽ bỏ chọn những câu không còn hiển thị.</p></div><a class="action-link" routerLink="/teacher">+ Nhập từ Excel</a></div>
+        <div class="mode-switch" role="group" aria-label="Ngân hàng nội dung">
+          <button type="button" [class.active]="mode() === 'questions'" [attr.aria-pressed]="mode() === 'questions'" [disabled]="publishing()" (click)="changeMode('questions')">Câu hỏi ôn tập</button>
+          <button type="button" [class.active]="mode() === 'game'" [attr.aria-pressed]="mode() === 'game'" [disabled]="publishing()" (click)="changeMode('game')">Trò chơi</button>
+        </div>
+        <div class="filters">
+          <div><label for="bank-search">Tìm câu hỏi</label><input id="bank-search" type="search" placeholder="Nhập từ khóa…" [value]="search()" [disabled]="loading() || publishing()" (input)="changeSearch($any($event.target).value)" /></div>
+          <div><label for="bank-difficulty">Độ khó</label><select id="bank-difficulty" [value]="difficulty()" [disabled]="loading() || publishing()" (change)="changeDifficulty($any($event.target).value)"><option value="all">Tất cả</option><option value="1">1 — Dễ nhất</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5 — Khó nhất</option></select></div>
+          <div><label for="bank-sort">Sắp xếp</label><select id="bank-sort" [value]="sort()" [disabled]="loading() || publishing()" (change)="changeSort($any($event.target).value)"><option value="newest">Mới tạo trước</option><option value="oldest">Cũ tạo trước</option><option value="easiest">Dễ trước</option><option value="hardest">Khó trước</option></select></div>
+        </div>
+        @if (loading()) {
+          <p role="status">Đang tải ngân hàng {{ mode() === 'questions' ? 'câu hỏi' : 'trò chơi' }}…</p>
+        } @else if (!bank().length && !error()) {
+          <p class="empty">Ngân hàng này chưa có câu hỏi. Thầy cô có thể <a routerLink="/teacher">nhập từ Excel</a> để bắt đầu.</p>
+        } @else {
+          <p class="count" role="status">Hiển thị {{ filtered().length }} / {{ bank().length }} câu · Đã chọn {{ selectedIds().size }} / 100</p>
+          @if (!filtered().length) { <p class="empty">Không tìm thấy câu phù hợp. Thử đổi từ khóa hoặc độ khó.</p> }
+          <ul class="question-list">
+            @for (question of filtered(); track question.id) {
+              <li class="question-card" [class.chosen]="selectedIds().has(question.id)">
+                <label class="question-choice"><input type="checkbox" [checked]="selectedIds().has(question.id)" [disabled]="publishing() || (!selectedIds().has(question.id) && selectedIds().size >= 100)" (change)="toggleQuestion(question.id)" /><span>{{ question.prompt }}</span></label>
+                <div class="meta"><span>{{ labels[question.type] }}</span><span>Độ khó {{ question.difficulty }}/5</span><span>Tạo ngày {{ date(question.createdAt) }}</span></div>
+                <p><strong>Lựa chọn:</strong> {{ question.options.join(' · ') || '—' }}</p>
+                <p><strong>Đáp án:</strong> {{ answer(question) }}</p>
+                <p><strong>Giải thích:</strong> {{ question.explanation || '—' }}</p>
+              </li>
+            }
+          </ul>
+        }
+      </section>
+
+      <section class="panel composer" aria-labelledby="compose-title">
+        <h2 id="compose-title">Tạo bài từ ngân hàng</h2>
+        <div class="compose-options">
+          <div><h3>Câu đã chọn</h3><p>Dùng các câu đã đánh dấu trong danh sách đang lọc.</p><button type="button" class="secondary" [disabled]="loading() || publishing() || !selectedIds().size" (click)="prepareSelected()">Xem trước {{ selectedIds().size }} câu đã chọn</button></div>
+          <div><h3>Lấy ngẫu nhiên</h3><label for="random-count">Số câu trong danh sách đang lọc</label><div class="random-row"><input id="random-count" type="number" min="1" max="100" step="1" inputmode="numeric" [value]="randomCount()" [disabled]="loading() || publishing()" (input)="randomCount.set($any($event.target).value)" /><button type="button" class="secondary" [disabled]="loading() || publishing() || !filtered().length" (click)="prepareRandom()">Lấy câu và xem trước</button></div></div>
+        </div>
+        @if (prepared().length) {
+          <div class="preview" aria-labelledby="preview-title"><h3 id="preview-title">Xem trước bài gồm {{ prepared().length }} câu</h3><p>Kiểm tra danh sách và đặt tên bài. Bài chỉ xuất hiện cho học sinh khi thầy cô bấm đăng.</p>
+            <ol>@for (question of prepared(); track question.id) { <li><strong>{{ question.prompt }}</strong><span>Độ khó {{ question.difficulty }}/5 · {{ labels[question.type] }}</span><span>Lựa chọn: {{ question.options.join(' · ') || '—' }}</span><span>Đáp án: {{ answer(question) }}</span><span>Giải thích: {{ question.explanation || '—' }}</span></li> }</ol>
+            <label for="new-set-title">Tên bài <span aria-hidden="true">*</span></label>
+            <input id="new-set-title" type="text" maxlength="100" [value]="title()" [disabled]="publishing()" (input)="title.set($any($event.target).value)" placeholder="Ví dụ: Ôn tập địa lí Đồng Nai" />
+            <button type="button" class="primary" [disabled]="publishing() || !title().trim()" (click)="publish()">{{ publishing() ? 'Đang đăng bài…' : 'Đăng bài cho học sinh →' }}</button>
+          </div>
+        }
+      </section>
+    }
+  </div>
+</main>

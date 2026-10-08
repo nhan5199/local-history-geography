@@ -56,6 +56,23 @@ export class RealtimeDatabaseService {
     await sdk.update(reference, changes);
   }
 
+  /** Preserve Firebase query order; snapshot.val() converts children to a plain object. */
+  async readEntries(path: string, constraints: QueryConstraint[] = []): Promise<Array<[string, unknown]>> {
+    const { sdk, reference } = await this.reference(path);
+    const snapshot = await sdk.get(sdk.query(reference, ...constraints));
+    const entries: Array<[string, unknown]> = [];
+    snapshot.forEach(child => { entries.push([child.key!, child.val() as unknown]); });
+    return entries;
+  }
+
+  /** Atomic updates across independent top-level paths, for bank imports and optional sets. */
+  async updateRoot(changes: Record<string, unknown>): Promise<void> {
+    const [database, sdk] = await Promise.all([
+      this.firebase.getDatabase(), import('firebase/database'),
+    ]);
+    await sdk.update(sdk.ref(database), changes);
+  }
+
   async remove(path: string): Promise<void> {
     const { sdk, reference } = await this.reference(path);
     await sdk.remove(reference);

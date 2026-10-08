@@ -1,8 +1,8 @@
 <main class="teacher-page">
-  <header class="hero"><div class="wrap"><span class="eyebrow">✦ DÀNH CHO THẦY CÔ</span><h1>Góc tạo câu hỏi</h1><p>Chuẩn bị tệp Excel, xem trước từng câu và đăng bài cho các em luyện tập.</p></div></header>
+  <header class="hero"><div class="wrap"><span class="eyebrow">✦ DÀNH CHO THẦY CÔ</span><h1>Góc tạo câu hỏi</h1><p>Nhập câu hỏi từ Excel vào ngân hàng, rồi chọn lúc nào tạo bài cho các em.</p></div></header>
   <div class="wrap body">
     <section class="template-card" aria-labelledby="template-title">
-      <div><h2 id="template-title">Tải mẫu Excel</h2><p>Chọn loại nội dung rồi điền câu hỏi theo các cột trong tệp mẫu.</p></div>
+      <div><h2 id="template-title">Tải mẫu Excel</h2><p>Chọn loại nội dung rồi điền câu hỏi và độ khó từ 1 đến 5 theo mẫu.</p></div>
       <div class="template-actions">
         <div class="mode-switch" role="group" aria-label="Loại tệp mẫu">
           <button type="button" [class.active]="mode() === 'questions'" [attr.aria-pressed]="mode() === 'questions'" [disabled]="busy()" (click)="changeMode('questions')">Bộ câu hỏi</button>
@@ -37,21 +37,27 @@
       </section>
     } @else if (auth.isTeacher()) {
       <section class="panel editor" aria-labelledby="editor-title">
-        <div class="editor-head"><div><span class="eyebrow">TÀI KHOẢN GIÁO VIÊN</span><h2 id="editor-title">Nhập bộ {{ mode() === 'questions' ? 'câu hỏi' : 'trò chơi' }}</h2><p>Chọn tệp .xlsx theo mẫu phía trên. Các câu hợp lệ sẽ hiện ra để thầy cô kiểm tra trước khi đăng.</p></div><button type="button" class="secondary" [disabled]="busy()" (click)="logout()">Đăng xuất</button></div>
-        <label for="question-title">Tên bộ câu hỏi <span aria-hidden="true">*</span></label>
-        <input id="question-title" type="text" maxlength="100" [value]="title()" (input)="title.set($any($event.target).value)" placeholder="Ví dụ: Khám phá sông Đồng Nai" />
+        <div class="editor-head"><div><span class="eyebrow">TÀI KHOẢN GIÁO VIÊN</span><h2 id="editor-title">Nhập {{ mode() === 'questions' ? 'câu hỏi' : 'trò chơi' }}</h2><p>Chọn tệp .xlsx theo mẫu phía trên. Kiểm tra câu hỏi trước khi lưu vào ngân hàng.</p><a class="bank-link" routerLink="/teacher/bank">Mở ngân hàng câu hỏi →</a></div><button type="button" class="secondary" [disabled]="busy()" (click)="logout()">Đăng xuất</button></div>
         <label for="question-file">Tệp Excel .xlsx <span aria-hidden="true">*</span></label>
         <input #fileInput id="question-file" type="file" accept=".xlsx,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" [disabled]="busy()" (change)="chooseFile($event)" />
+        <fieldset class="import-choice"><legend>Sau khi kiểm tra tệp</legend>
+          <label><input type="radio" name="import-choice" [checked]="!createTest()" [disabled]="busy()" (change)="createTest.set(false)" /> Chỉ lưu vào ngân hàng</label>
+          <label><input type="radio" name="import-choice" [checked]="createTest()" [disabled]="busy()" (change)="createTest.set(true)" /> Lưu vào ngân hàng và tạo bài cho học sinh</label>
+        </fieldset>
+        @if (createTest()) {
+          <label for="question-title">Tên bài <span aria-hidden="true">*</span></label>
+          <input id="question-title" type="text" maxlength="100" [value]="title()" (input)="title.set($any($event.target).value)" placeholder="Ví dụ: Khám phá sông Đồng Nai" />
+        }
         @if (busy() && fileName() && !preview().length) { <p role="status">Đang kiểm tra {{ fileName() }}…</p> }
         @if (preview().length) {
           <div class="preview-head"><h3>Xem trước {{ preview().length }} câu đã kiểm tra</h3><span>{{ fileName() }}</span></div>
-          <div class="table-scroll"><table><thead><tr><th scope="col">STT</th><th scope="col">Kiểu</th><th scope="col">Câu hỏi</th><th scope="col">Lựa chọn</th><th scope="col">Đáp án</th><th scope="col">Giải thích</th></tr></thead><tbody>
+          <div class="table-scroll"><table><thead><tr><th scope="col">STT</th><th scope="col">Độ khó</th><th scope="col">Kiểu</th><th scope="col">Câu hỏi</th><th scope="col">Lựa chọn</th><th scope="col">Đáp án</th><th scope="col">Giải thích</th></tr></thead><tbody>
             @for (question of preview(); track question.id; let index = $index) {
-              <tr><th scope="row">{{ index + 1 }}</th><td>{{ labels[question.type] }}</td><td>{{ question.prompt }}</td><td>{{ question.options.join(' · ') || '—' }}</td><td>{{ question.type === 'yesno' ? (question.answers[0] === 'true' ? 'Đúng' : 'Sai') : question.answers.join(' · ') }}</td><td>{{ question.explanation || '—' }}</td></tr>
+              <tr><th scope="row">{{ index + 1 }}</th><td>{{ question.difficulty ?? 1 }}/5</td><td>{{ labels[question.type] }}</td><td>{{ question.prompt }}</td><td>{{ question.options.join(' · ') || '—' }}</td><td>{{ question.type === 'yesno' ? (question.answers[0] === 'true' ? 'Đúng' : 'Sai') : question.answers.join(' · ') }}</td><td>{{ question.explanation || '—' }}</td></tr>
             }
           </tbody></table></div>
         }
-        <div class="publish-row"><p>Chỉ khi thầy cô bấm đăng, bộ câu hỏi mới xuất hiện trong thư viện.</p><button type="button" class="primary" [disabled]="busy() || !title().trim() || !preview().length" (click)="publish(fileInput)">{{ busy() ? 'Đang xử lý…' : 'Đăng bộ câu hỏi →' }}</button></div>
+        <div class="publish-row"><p>{{ createTest() ? 'Bài sẽ xuất hiện cho học sinh sau khi thầy cô lưu.' : 'Các câu được lưu riêng trong ngân hàng; chưa tạo bài cho học sinh.' }}</p><button type="button" class="primary" [disabled]="busy() || (createTest() && !title().trim()) || !preview().length" (click)="publish(fileInput)">{{ busy() ? 'Đang xử lý…' : (createTest() ? 'Lưu và tạo bài →' : 'Lưu vào ngân hàng →') }}</button></div>
       </section>
     }
   </div>

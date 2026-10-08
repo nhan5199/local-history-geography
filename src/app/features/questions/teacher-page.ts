@@ -1,4 +1,5 @@
 import { Component, ElementRef, OnInit, inject, signal, viewChild } from '@angular/core';
+import { RouterLink } from '@angular/router';
 import { TeacherAuthService } from '../../core/firebase/teacher-auth.service';
 import { QuestionLibraryService } from '../../core/firebase/question-library.service';
 import { downloadQuestionTemplate, parseQuestionExcel } from '../../core/firebase/question-excel';
@@ -6,6 +7,7 @@ import { QUESTION_TYPE_LABELS, type LearningQuestion, type QuestionSet } from '.
 
 @Component({
   selector: 'app-teacher-page',
+  imports: [RouterLink],
   templateUrl: './teacher-page.html',
   styleUrl: './teacher-page.scss',
 })
@@ -17,6 +19,7 @@ export class TeacherPage implements OnInit {
   readonly username = signal('');
   readonly password = signal('');
   readonly title = signal('');
+  readonly createTest = signal(false);
   readonly fileName = signal('');
   readonly preview = signal<LearningQuestion[]>([]);
   readonly busy = signal(false);
@@ -108,13 +111,15 @@ export class TeacherPage implements OnInit {
   }
 
   async publish(fileInput: HTMLInputElement): Promise<void> {
-    if (this.busy() || !this.auth.isTeacher() || !this.title().trim() || !this.preview().length) return;
+    if (this.busy() || !this.auth.isTeacher() || (this.createTest() && !this.title().trim()) || !this.preview().length) return;
     this.busy.set(true);
     this.error.set('');
     this.success.set('');
     try {
-      await this.library.create(this.title().trim(), this.mode(), this.preview());
-      this.success.set(`Đã đăng bộ ${this.mode() === 'questions' ? 'câu hỏi' : 'trò chơi'} “${this.title().trim()}”.`);
+      await this.library.importQuestions(this.title().trim(), this.mode(), this.preview(), this.createTest());
+      this.success.set(this.createTest()
+        ? `Đã lưu ${this.preview().length} câu vào ngân hàng và đăng bài “${this.title().trim()}”.`
+        : `Đã lưu ${this.preview().length} câu vào ngân hàng ${this.mode() === 'questions' ? 'câu hỏi' : 'trò chơi'}.`);
       this.clearDraft(false);
       fileInput.value = '';
     } catch (error) {
@@ -129,6 +134,7 @@ export class TeacherPage implements OnInit {
   private clearDraft(clearMessages = true): void {
     ++this.selectionVersion;
     this.title.set('');
+    this.createTest.set(false);
     this.preview.set([]);
     this.fileName.set('');
     if (clearMessages) { this.error.set(''); this.success.set(''); }

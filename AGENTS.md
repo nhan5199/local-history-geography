@@ -23,6 +23,8 @@ This Angular app helps elementary school students and teachers explore Đồng N
 
 ## Firebase and safety
 
+- Teacher Excel imports offer bank-only or bank-and-test publishing for both question tests and games. Keep the two banks separate and teacher-only. Difficulty defaults to 1; support levels 1–5 and legacy Excel files without the new column. Teachers browse by creation date and difficulty, preview random or specific selections, and explicitly publish the resulting test/game. Preserve reusable bank questions when creating a test and never silently omit older bank entries.
+
 - Question lists support one correct answer, multiple correct answers, and true/false. Games also support ordering, matching, and missing-word answers, presented as a friendly gameshow. Teachers import validated Excel workbooks, preview before publishing, and can download an example workbook. Keep student results local and collect no student identifiers.
 - Teacher login uses Firebase Authentication with username aliases or email and password; never store readable passwords in Realtime Database. Restrict publishing to an editor claim or a protected teacher UID allowlist. Only an administrator provisions teacher accounts; public signup does not grant teacher access.
 - The owner authorized enabling email/password Authentication and provisioning the first teacher account (`nhan`) on 2026-10-07. Passwords must never be committed, logged, or recorded here. Deploying the question-specific Realtime Database rules required for teacher publishing is within this feature request.

@@ -8,3 +8,4 @@ coverage
 .env.*
 *service-account*.json
 firebase-debug*.log
+database-debug*.log

@@ -3,6 +3,7 @@ import type { QuestionMode } from './question-library.service';
 import { validateLearningQuestion } from './question-library.service';
 
 const HEADERS = ['Loại câu hỏi', 'Câu hỏi', 'Lựa chọn', 'Đáp án', 'Giải thích'] as const;
+const DIFFICULTY_HEADER = 'Độ khó';
 const TYPES: QuestionType[] = ['single', 'multiple', 'yesno', 'order', 'match', 'fill'];
 const TYPE_ALIASES: Record<string, QuestionType> = {
   single: 'single', multiple: 'multiple', yesno: 'yesno', order: 'order', match: 'match', fill: 'fill',
@@ -44,8 +45,13 @@ function checkZipEntries(bytes: Uint8Array): void {
   if (!entries) throw new Error('Tệp .xlsx không có danh mục ZIP hợp lệ.');
 }
 
-function parseRow(row: unknown[], number: number, mode: QuestionMode): LearningQuestion {
-  const [rawType, rawPrompt, rawOptions, rawAnswers, rawExplanation] = row.map(textCell);
+function parseRow(row: unknown[], number: number, mode: QuestionMode, id: string): LearningQuestion {
+  const [rawType, rawPrompt, rawOptions, rawAnswers, rawExplanation, rawDifficulty] = row.map(textCell);
+  const difficulty = rawDifficulty ? Number(rawDifficulty) : 1;
+  if (!Number.isInteger(difficulty) || difficulty < 1 || difficulty > 5 ||
+      (rawDifficulty && !/^[1-5]$/.test(rawDifficulty))) {
+    throw new Error(`Dòng ${number}: độ khó phải là số nguyên từ 1 đến 5.`);
+  }
   const type = TYPE_ALIASES[rawType.toLocaleLowerCase('vi')];
   if (!type || (mode === 'questions' && !['single', 'multiple', 'yesno'].includes(type))) {
     throw new Error(`Dòng ${number}: loại câu hỏi không phù hợp. Dùng ${mode === 'questions' ? 'single, multiple, yesno' : TYPES.join(', ')}.`);
@@ -63,7 +69,8 @@ function parseRow(row: unknown[], number: number, mode: QuestionMode): LearningQ
     }
   }
   const question: LearningQuestion = {
-    id: crypto.randomUUID(), type, prompt: rawPrompt, options, answers, explanation: rawExplanation,
+    id, type, prompt: rawPrompt, options, answers,
+    explanation: rawExplanation, difficulty,
   };
   if (!validateLearningQuestion(question, mode)) {
     const detail: Record<QuestionType, string> = {
@@ -108,15 +115,23 @@ export async function parseQuestionExcel(file: File, mode: QuestionMode): Promis
   if (range && (range.s.r !== 0 || range.s.c !== 0)) throw new Error('Tiêu đề cột phải bắt đầu ở ô A1.');
   const rows = xlsx.utils.sheet_to_json<unknown[]>(sheet, { header: 1, defval: '', blankrows: true, raw: false });
   if (rows.length < 2) throw new Error('Bảng tính chưa có câu hỏi.');
-  const actual = (rows[0] ?? []).slice(0, 5).map(textCell);
+  const actual = (rows[0] ?? []).slice(0, 6).map(textCell);
   if (HEADERS.some((header, index) => actual[index] !== header)) {
     throw new Error(`Dòng 1: tiêu đề cột phải là ${HEADERS.join(', ')}.`);
+  }
+  if (actual[5] && actual[5] !== DIFFICULTY_HEADER) {
+    throw new Error(`Dòng 1: cột F phải là ${DIFFICULTY_HEADER}.`);
   }
   const nonempty = rows.slice(1).map((row, index) => ({ row, number: index + 2 }))
     .filter(({ row }) => row.some(value => textCell(value)));
   if (!nonempty.length) throw new Error('Bảng tính chưa có câu hỏi.');
   if (nonempty.length > 100) throw new Error('Mỗi tệp chỉ được tối đa 100 câu hỏi.');
-  return nonempty.map(({ row, number }) => parseRow(row, number, mode));
+  const digest = new Uint8Array(await crypto.subtle.digest('SHA-256', bytes));
+  const fingerprint = Array.from(digest.slice(0, 16), byte => byte.toString(16).padStart(2, '0')).join('');
+  return nonempty.map(({ row, number }) => {
+    if (!actual[5] && textCell(row[5])) throw new Error(`Dòng ${number}: cần tiêu đề cột ${DIFFICULTY_HEADER} ở ô F1.`);
+    return parseRow(row, number, mode, `q-${fingerprint}-${number}`);
+  });
 }
 
 /** Download a real XLSX workbook with a small example and instructions. */
@@ -126,7 +141,8 @@ export async function downloadQuestionTemplate(mode: QuestionMode): Promise<void
   const workbook = xlsx.utils.book_new();
   const instructions = [
     ['Mẫu câu hỏi', mode === 'questions' ? 'Ôn tập' : 'Trò chơi'],
-    ['Cột', 'Loại câu hỏi | Câu hỏi | Lựa chọn | Đáp án | Giải thích'],
+    ['Cột', 'Loại câu hỏi | Câu hỏi | Lựa chọn | Đáp án | Giải thích | Độ khó'],
+    ['Độ khó', 'Số nguyên từ 1 đến 5; để trống thì mặc định là 1.'],
     ['Cách tách mục', 'Dùng dấu | giữa các lựa chọn hoặc đáp án; không đặt | trong một mục.'],
     ['single', 'Đáp án là một lựa chọn.'], ['multiple', 'Đáp án là các lựa chọn đúng, cách nhau bằng |.'],
     ['yesno', 'Để trống lựa chọn; đáp án ghi Đúng hoặc Sai.'],
@@ -145,7 +161,8 @@ export async function downloadQuestionTemplate(mode: QuestionMode): Promise<void
     ['fill', 'Điền hướng mặt trời mọc: ___.', '', 'Đông|hướng Đông', 'Mặt trời mọc ở hướng Đông.'],
   ];
   const allowed = mode === 'questions' ? examples.slice(0, 3) : examples;
-  xlsx.utils.book_append_sheet(workbook, xlsx.utils.aoa_to_sheet([[...HEADERS], ...allowed]), 'Questions');
+  xlsx.utils.book_append_sheet(workbook, xlsx.utils.aoa_to_sheet([[...HEADERS, DIFFICULTY_HEADER],
+    ...allowed.map((row, index) => [...row, index % 5 + 1])]), 'Questions');
   const bytes = xlsx.write(workbook, { type: 'array', bookType: 'xlsx' }) as ArrayBuffer;
   const url = URL.createObjectURL(new Blob([bytes], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' }));
   try {

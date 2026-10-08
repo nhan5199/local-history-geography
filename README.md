@@ -30,6 +30,15 @@ npm test -- --watch=false
 Production output: `dist/local-history-geography/browser`. Your web host must rewrite
 non-file routes to `index.html` for client-side routing.
 
+## Teacher tests and games
+
+Teachers sign in at `/teacher` to download an Excel template, preview an import,
+and save questions to the bank alone or publish a test/game at the same time.
+At `/teacher/bank`, browse the separate test and game banks by creation date or
+difficulty, filter them, and build a new activity from selected or random questions.
+Difficulty ranges from 1–5 and defaults to 1 for older Excel files. See
+[teacher workflows and question formats](docs/questions.md) for limits and Firebase rules.
+
 ## Books and panoramas
 
 Visit `/books` for the PDF flipbook library and `/panorama` for a touch-friendly
@@ -62,11 +71,11 @@ when their service methods are used.
 
 - **Realtime Database** stores lesson text and metadata under `/lessons/{lessonId}`.
 - **Cloud Storage for Firebase** stores image, PDF, audio, and other file bytes.
-- No authentication, account screens, or student uploads are included.
+- Firebase Authentication protects teacher imports and question banks; students need no account.
 
-The configuration is installed locally; database connectivity and cloud rules have
-not been verified or deployed. The pages still use bundled sample lessons. SDK
-initialization does not replace sample content with live database records.
+Books, panoramas, teacher question banks, and published tests/games use Firebase.
+The lesson pages still use bundled sample lessons; SDK initialization does not
+replace those lesson samples with live database records.
 
 To prepare live content in the [Firebase console](https://console.firebase.google.com/):
 
