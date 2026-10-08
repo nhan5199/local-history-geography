@@ -14,6 +14,7 @@ This Angular app helps elementary school students and teachers explore Đồng N
 ## UI and content
 
 - Keep Milo's floating dock to one character button. Do not add position, hide, or show controls; use the character, panel close button, or Escape to open/close the conversation.
+- Inputs should not show a focus outline or focus shadow after mouse/touch interaction. Keep a visible keyboard focus indicator when navigating with Tab; text inputs need explicit input-modality handling because browsers also match their `:focus-visible` state on clicks.
 
 - Prefer code-native SVG/CSS illustrations for lightweight cartoon art. Use Figma or canvas when it materially helps; external design files are optional.
 - Animate buttons and reveal sections on scroll, honor `prefers-reduced-motion`, preserve visible content without animation support, and clean up observers/listeners/viewers.
