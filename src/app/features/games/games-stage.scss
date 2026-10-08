@@ -1,0 +1,15 @@
+.stage { position: relative; overflow: hidden; max-width: 900px; margin: 0 auto; padding: clamp(1rem, 4vw, 2rem); border: 5px solid #f5cc75; border-radius: 1.8rem; background: linear-gradient(155deg, #184f52, #204b73 55%, #3d3674); box-shadow: 0 20px 44px #183b4c36; }
+.stage-lights { position: absolute; inset: 0 0 auto; display: flex; justify-content: space-around; height: 3.2rem; color: #ffe49a; opacity: .8; pointer-events: none; }
+.stage-lights span { font-size: 2rem; text-shadow: 0 0 15px #ffdc73; animation: glow 2.5s ease-in-out infinite alternate; }
+.stage-lights span:nth-child(2) { animation-delay: .6s; }
+.stage-lights span:nth-child(3) { animation-delay: 1.2s; }
+.stage-top, .round-meta { position: relative; display: flex; justify-content: space-between; align-items: center; gap: 1rem; color: #fff; }
+.stage-top { margin: 2rem 0 1.8rem; }
+.stage-back { border: 0; background: transparent; color: #fff; font-weight: 800; text-decoration: underline; }
+.score { border-radius: 2rem; padding: .45rem .8rem; background: #fff1ba; color: #66451a; font-weight: 900; white-space: nowrap; }
+.round-meta { margin-bottom: .65rem; font-size: .78rem; font-weight: 900; letter-spacing: .05em; }
+.progress-track { overflow: hidden; height: .65rem; margin-bottom: 1.2rem; border-radius: 1rem; background: #ffffff55; }
+.progress-track span { display: block; height: 100%; border-radius: inherit; background: #ffd66c; transition: width .3s; }
+.question-panel { position: relative; border-radius: 1.3rem; padding: clamp(1.2rem, 4vw, 2.2rem); background: #fffefa; }
+.type-label { display: inline-block; margin-bottom: .8rem; border-radius: 2rem; padding: .4rem .75rem; background: #eaf1de; color: #33664c; font-size: .8rem; font-weight: 900; }
+.question-panel h2 { margin-bottom: 1.5rem; font-size: clamp(1.5rem, 3.5vw, 2.15rem); line-height: 1.3; }

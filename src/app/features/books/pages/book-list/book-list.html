@@ -1,0 +1,33 @@
+<section class="container books-page">
+  <a class="books-back" routerLink="/">← Trang chủ</a>
+  <header class="books-heading">
+    <span class="books-eyebrow">THƯ VIỆN KHÁM PHÁ</span>
+    <h1>Mở một cuốn sách<span>.</span></h1>
+    <p>Chọn tài liệu PDF để đọc và lật từng trang theo nhịp của bạn.</p>
+  </header>
+
+  @if (loading()) {
+    <p class="books-state" role="status">Đang tải thư viện…</p>
+  } @else if (error()) {
+    <div class="books-state" role="alert">
+      <p>Chưa tải được danh sách sách.</p>
+      <button type="button" (click)="load()">Thử lại</button>
+    </div>
+  } @else if (books().length === 0) {
+    <p class="books-state">Thư viện chưa có sách. Hãy quay lại sau nhé.</p>
+  } @else {
+    <div class="books-grid">
+      @for (book of books(); track book.id) {
+        <a class="book-card" [routerLink]="['/books', book.id]">
+          <div class="book-art" aria-hidden="true"><span>✦</span><strong>PDF</strong></div>
+          <div class="book-copy">
+            <span class="book-kind">SÁCH TƯƠNG TÁC</span>
+            <h2>{{ book.title }}</h2>
+            <p>{{ book.description }}</p>
+            <span class="book-open">Mở sách <span aria-hidden="true">↗</span></span>
+          </div>
+        </a>
+      }
+    </div>
+  }
+</section>

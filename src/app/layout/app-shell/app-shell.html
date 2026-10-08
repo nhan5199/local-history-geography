@@ -1,14 +1,19 @@
 <div class="site-shell">
   <header class="site-header">
-    <div class="container d-flex align-items-center justify-content-between gap-3 py-3">
-      <a class="brand d-flex align-items-center gap-2 text-decoration-none" routerLink="/" aria-label="Our Place, home">
-        <span class="brand-mark" aria-hidden="true">✦</span>
-        <span>our<span class="brand-accent">place.</span></span>
-      </a>
-      <nav class="d-flex align-items-center gap-3 gap-sm-4" aria-label="Main navigation">
-        <a class="nav-link" routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">Explore lessons</a>
-        <a class="nav-link" routerLink="/map" routerLinkActive="active">Bản đồ Đồng Nai</a>
-        <a class="nav-link d-none d-sm-inline" routerLink="/" fragment="how-it-works">How it works</a>
+    <div class="container header-inner">
+      <a class="brand" routerLink="/" aria-label="Đồng Nai ơi, trang chủ"
+        ><span class="brand-mark" aria-hidden="true">✦</span><span>Đồng Nai <em>ơi!</em></span></a
+      >
+      <nav class="main-nav" aria-label="Điều hướng chính">
+        <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }"
+          >Trang chủ</a
+        >
+        <a routerLink="/map" routerLinkActive="active">Bản đồ</a>
+        <a routerLink="/books" routerLinkActive="active">Tủ sách</a>
+        <a routerLink="/panorama" routerLinkActive="active">Góc 360°</a>
+        <a routerLink="/questions" routerLinkActive="active">Câu hỏi</a>
+        <a routerLink="/games" routerLinkActive="active">Sân chơi</a>
+        <a routerLink="/teacher" routerLinkActive="active">Giáo viên</a>
       </nav>
     </div>
   </header>
@@ -16,13 +21,15 @@
   <main id="main-content"><router-outlet /></main>
 
   <footer class="site-footer">
-    <div class="container d-flex flex-column flex-sm-row align-items-start align-items-sm-center justify-content-between gap-2 py-4">
-      <span class="footer-brand">our<span>place.</span></span>
-      <span>Sample lessons for curious young explorers · Ready to adapt for your community</span>
+    <div class="container footer-inner">
+      <span class="footer-brand">Đồng Nai <em>ơi!</em> ✦</span
+      ><span>Mỗi vùng đất một câu chuyện hay.</span><a routerLink="/">Về trang chủ ↑</a>
     </div>
   </footer>
 </div>
 
 @defer (on idle) {
-  <app-project-companion />
+  @if (showCompanion()) {
+    <app-project-companion />
+  }
 }

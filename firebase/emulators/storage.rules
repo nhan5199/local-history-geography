@@ -4,5 +4,15 @@ service firebase.storage {
     match /samples/{path=**} {
       allow read, write: if true;
     }
+    match /published/media/book/{fileName} {
+      allow read: if true;
+      allow write: if request.resource == null ||
+        (request.resource.size <= 10 * 1024 * 1024 && request.resource.contentType == 'application/pdf');
+    }
+    match /published/media/panorama/{fileName} {
+      allow read: if true;
+      allow write: if request.resource == null ||
+        (request.resource.size <= 5 * 1024 * 1024 && request.resource.contentType.matches('image/(jpeg|png)'));
+    }
   }
 }

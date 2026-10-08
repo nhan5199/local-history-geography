@@ -1,40 +1,331 @@
-<section class="hero overflow-hidden">
-  <div class="container hero-inner row align-items-center g-5 mx-auto">
-    <div class="col-lg-6 hero-copy">
-      <span class="eyebrow"
-        ><span class="eyebrow-dot" aria-hidden="true"></span> A place to begin exploring</span
-      >
-      <h1>Every place<br />has a <em>story.</em></h1>
+<svg class="art-library" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
+  <symbol id="lesson-art-mint" viewBox="0 0 280 190">
+    <path
+      d="M28 148 82 38l62 24 49-18 59 84-70 36-66-28z"
+      fill="#fff6dc"
+      stroke="#426b55"
+      stroke-width="5"
+      stroke-linejoin="round"
+    />
+    <path
+      d="m82 38 34 98m28-74 38 102m-98-86 48 12m27 34 40-25"
+      fill="none"
+      stroke="#9fcdb1"
+      stroke-width="4"
+      stroke-linecap="round"
+    />
+    <path
+      d="M192 86c0 23-26 42-26 42s-26-19-26-42a26 26 0 1 1 52 0Z"
+      fill="#f17455"
+      stroke="#a64335"
+      stroke-width="4"
+    />
+    <circle cx="166" cy="85" r="9" fill="#fff6dc" />
+    <path
+      d="m51 75 12-9m177 24 9 7M40 123l-11 5"
+      stroke="#466b56"
+      stroke-width="4"
+      stroke-linecap="round"
+    />
+  </symbol>
+  <symbol id="lesson-art-peach" viewBox="0 0 280 190">
+    <rect
+      x="44"
+      y="52"
+      width="146"
+      height="105"
+      rx="9"
+      fill="#fff8e4"
+      stroke="#874e42"
+      stroke-width="5"
+      transform="rotate(-9 44 52)"
+    />
+    <rect
+      x="82"
+      y="35"
+      width="146"
+      height="105"
+      rx="9"
+      fill="#fff6e2"
+      stroke="#874e42"
+      stroke-width="5"
+      transform="rotate(8 82 35)"
+    />
+    <path d="M115 94h72M115 108h55" stroke="#d9aa88" stroke-width="5" stroke-linecap="round" />
+    <circle cx="154" cy="68" r="16" fill="#f6c66b" stroke="#b36b4b" stroke-width="4" />
+    <path d="m202 138 15 9 13-28-15-8z" fill="#628c78" stroke="#426653" stroke-width="4" />
+    <path
+      d="m49 39 4-13m-12 8 17 5m187 74 11-8"
+      stroke="#9e5d42"
+      stroke-width="4"
+      stroke-linecap="round"
+    />
+  </symbol>
+  <symbol id="lesson-art-sky" viewBox="0 0 280 190">
+    <path d="M15 139q46-36 88 0t91 0 71 0v52H15Z" fill="#79c0d4" />
+    <path
+      d="M18 143q44-29 85 2t91-2 69 0"
+      fill="none"
+      stroke="#fff9dc"
+      stroke-width="5"
+      stroke-linecap="round"
+      stroke-dasharray="13 13"
+    />
+    <path
+      d="m49 137 52-71 38 39 33-49 60 81Z"
+      fill="#78ac80"
+      stroke="#416e61"
+      stroke-width="5"
+      stroke-linejoin="round"
+    />
+    <path d="m101 66 13 24-14-6-10 8m82-36 13 24-15-7-9 10" fill="#dff0d8" />
+    <circle cx="216" cy="45" r="20" fill="#ffd776" stroke="#d89c4d" stroke-width="4" />
+  </symbol>
+  <symbol id="lesson-art-lavender" viewBox="0 0 280 190">
+    <path
+      d="M64 161V76l77-40 77 40v85Z"
+      fill="#ffe6ae"
+      stroke="#695978"
+      stroke-width="5"
+      stroke-linejoin="round"
+    />
+    <path
+      d="m51 79 90-53 90 53"
+      fill="none"
+      stroke="#695978"
+      stroke-width="7"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    />
+    <path
+      d="M119 161v-56h43v56M88 83h25v27H88zm81 0h25v27h-25z"
+      fill="#a8d6d1"
+      stroke="#695978"
+      stroke-width="4"
+    />
+    <path d="M43 165h195" stroke="#695978" stroke-width="5" stroke-linecap="round" />
+    <path
+      d="M39 133c13-18 23-18 35 0m133 0c12-18 22-18 34 0"
+      fill="none"
+      stroke="#76a47b"
+      stroke-width="8"
+      stroke-linecap="round"
+    />
+  </symbol>
+</svg>
+
+<section class="hero" aria-labelledby="home-heading">
+  <div class="container hero-inner">
+    <div class="hero-copy" data-reveal>
+      <span class="eyebrow"><span aria-hidden="true">✦</span> CÙNG KHÁM PHÁ ĐỒNG NAI</span>
+      <h1 id="home-heading">Mỗi vùng đất<br /><span>một câu chuyện hay!</span></h1>
       <p>
-        Follow the clues around you. Explore the history and geography that make a community feel
-        like home.
+        Đồng Nai có dòng sông, những con đường và bao điều thú vị đang chờ em khám phá. Mình bắt đầu
+        chuyến phiêu lưu nhé!
       </p>
-      <a class="hero-cta" href="#lessons">Explore lessons <span aria-hidden="true">↗</span></a>
-      <div class="hero-note">
-        <span aria-hidden="true">✳</span> Made for curious minds, ages 8–11
+      <div class="hero-actions">
+        <a class="primary-cta" href="#lessons">Khám phá ngay <span aria-hidden="true">↗</span></a>
+        <a class="text-cta" routerLink="/map">Xem bản đồ <span aria-hidden="true">→</span></a>
       </div>
+      <div class="hero-note"><span aria-hidden="true">★</span> Học mà chơi, chơi mà học</div>
     </div>
-    <div class="col-lg-6"><app-map-illustration /></div>
+    <div class="hero-art" data-reveal>
+      <svg
+        viewBox="0 0 620 490"
+        role="img"
+        aria-labelledby="hero-art-title"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <title id="hero-art-title">
+          Hai bạn nhỏ khám phá dòng sông, cây xanh và di tích trên bản đồ Đồng Nai
+        </title>
+        <ellipse cx="320" cy="452" rx="272" ry="28" fill="#d49c6190" />
+        <path
+          d="M49 158Q95 40 265 42q181-27 293 100l25 214q-128 86-323 80Q91 430 35 311Z"
+          fill="#fbe4a4"
+          stroke="#263f36"
+          stroke-width="6"
+        />
+        <path
+          d="M59 287q80-78 180-23t173-21 159-31v143q-116 86-311 80Q97 430 42 309Z"
+          fill="#9acb91"
+        />
+        <path
+          d="M32 337q120-80 217-9t169 12q75-58 155-4v39q-128 71-310 62Q108 429 32 337Z"
+          fill="#77b9aa"
+        />
+        <path
+          d="M79 360q88-57 166-13t172 2q70-40 130-27"
+          fill="none"
+          stroke="#d5f3db"
+          stroke-width="6"
+          stroke-linecap="round"
+          stroke-dasharray="12 18"
+        />
+        <path
+          d="M75 216q68-45 139 0t140-1 161-5"
+          fill="none"
+          stroke="#fff7db"
+          stroke-width="20"
+          stroke-linecap="round"
+        />
+        <path
+          d="M75 216q68-45 139 0t140-1 161-5"
+          fill="none"
+          stroke="#cd9f71"
+          stroke-width="3"
+          stroke-dasharray="7 15"
+        />
+        <circle cx="458" cy="98" r="38" fill="#ffd46a" stroke="#263f36" stroke-width="5" />
+        <path
+          d="m458 38-1-15m-40 26-11-10m94 9 10-11"
+          stroke="#263f36"
+          stroke-width="5"
+          stroke-linecap="round"
+        />
+        <path
+          d="M119 190V111m-29 27q27-65 58-4m-44 26q17-42 44-18M495 257v-89m-35 24q33-85 72-1m-65 29q28-56 64-9"
+          fill="none"
+          stroke="#386b50"
+          stroke-width="11"
+          stroke-linecap="round"
+        />
+        <path d="M312 138h106v88H312Z" fill="#f8e2b0" stroke="#263f36" stroke-width="5" />
+        <path
+          d="m299 142 66-64 67 64Z"
+          fill="#e77f60"
+          stroke="#263f36"
+          stroke-width="5"
+          stroke-linejoin="round"
+        />
+        <path d="M359 226v-49h28v49" fill="#78bdc2" stroke="#263f36" stroke-width="4" />
+        <path
+          d="M328 163h17v20h-17zm66 0h17v20h-17z"
+          fill="#89c8c5"
+          stroke="#263f36"
+          stroke-width="3"
+        />
+        <path
+          d="M189 313q-5-49 30-59 42 1 39 54l-10 20-50-2Z"
+          fill="#f5b15c"
+          stroke="#263f36"
+          stroke-width="5"
+        />
+        <circle cx="225" cy="249" r="31" fill="#f6c6a2" stroke="#263f36" stroke-width="5" />
+        <path d="M197 246q-5-37 24-39 32-3 38 28-29-13-62 11Z" fill="#3b3431" />
+        <path d="M210 251h2m22-1h2" stroke="#263f36" stroke-width="5" stroke-linecap="round" />
+        <path
+          d="M218 263q7 6 15-1"
+          fill="none"
+          stroke="#ab6652"
+          stroke-width="3"
+          stroke-linecap="round"
+        />
+        <path
+          d="M205 326 192 388m46-62 26 61m-65-73-43 45m96-45 36 33"
+          stroke="#263f36"
+          stroke-width="11"
+          stroke-linecap="round"
+        />
+        <path d="M184 388h21m51-1h21" stroke="#523e37" stroke-width="12" stroke-linecap="round" />
+        <path
+          d="M346 340q-6-53 33-61 37 5 41 64l-18 30-42-2Z"
+          fill="#76b4c0"
+          stroke="#263f36"
+          stroke-width="5"
+        />
+        <circle cx="381" cy="274" r="31" fill="#eeb58b" stroke="#263f36" stroke-width="5" />
+        <path d="M352 267q-4-37 27-39 34 1 35 38-32-14-62 1Z" fill="#4c3835" />
+        <path d="M368 278h2m21-1h2" stroke="#263f36" stroke-width="5" stroke-linecap="round" />
+        <path
+          d="M375 289q7 6 14-1"
+          fill="none"
+          stroke="#a4624f"
+          stroke-width="3"
+          stroke-linecap="round"
+        />
+        <path
+          d="m363 369-21 46m59-45 30 44m-73-59-31-27m82 24 39-35"
+          stroke="#263f36"
+          stroke-width="11"
+          stroke-linecap="round"
+        />
+        <path d="M334 416h22m67-1h24" stroke="#523e37" stroke-width="12" stroke-linecap="round" />
+        <path d="m435 322 38-35-12-16-37 31Z" fill="#fff9e5" stroke="#263f36" stroke-width="4" />
+      </svg>
+    </div>
+  </div>
+</section>
+
+<section class="adventure-section" aria-labelledby="adventure-heading">
+  <div class="container">
+    <div class="section-intro" data-reveal>
+      <span class="section-kicker">BẮT ĐẦU TỪ ĐÂU?</span>
+      <h2 id="adventure-heading">Chọn một chuyến phiêu lưu <span>✦</span></h2>
+      <p>Mỗi góc nhỏ của Đồng Nai đều có điều mới để em tìm hiểu.</p>
+    </div>
+    <div class="adventure-grid">
+      <a class="adventure-card adventure-map" routerLink="/map" data-reveal
+        ><span class="adventure-icon" aria-hidden="true">⌖</span
+        ><span class="adventure-text"
+          ><strong>Khám phá bản đồ</strong><small>Tìm những nơi quen mà lạ</small></span
+        ><span class="adventure-arrow" aria-hidden="true">↗</span></a
+      >
+      <a class="adventure-card adventure-books" routerLink="/books" data-reveal
+        ><span class="adventure-icon" aria-hidden="true">▤</span
+        ><span class="adventure-text"
+          ><strong>Đọc sách cùng em</strong><small>Lật mở bao câu chuyện hay</small></span
+        ><span class="adventure-arrow" aria-hidden="true">↗</span></a
+      >
+      <a class="adventure-card adventure-panorama" routerLink="/panorama" data-reveal
+        ><span class="adventure-icon" aria-hidden="true">◉</span
+        ><span class="adventure-text"
+          ><strong>Ngắm nhìn 360°</strong><small>Ghé thăm từ mọi góc nhìn</small></span
+        ><span class="adventure-arrow" aria-hidden="true">↗</span></a
+      >
+    </div>
+  </div>
+</section>
+
+<section class="adventure-section" aria-labelledby="practice-heading">
+  <div class="container">
+    <div class="section-intro" data-reveal>
+      <span class="section-kicker">THỬ TÀI CÙNG BẠN</span>
+      <h2 id="practice-heading">Học vui, nhớ lâu <span>★</span></h2>
+      <p>Ôn lại điều vừa học hoặc bước lên sân khấu kiến thức!</p>
+    </div>
+    <div class="adventure-grid">
+      <a class="adventure-card adventure-books" routerLink="/questions" data-reveal>
+        <span class="adventure-icon" aria-hidden="true">?</span>
+        <span class="adventure-text"><strong>Câu hỏi ôn tập</strong><small>Tự thử sức với từng câu hỏi</small></span>
+        <span class="adventure-arrow" aria-hidden="true">↗</span>
+      </a>
+      <a class="adventure-card adventure-panorama" routerLink="/games" data-reveal>
+        <span class="adventure-icon" aria-hidden="true">★</span>
+        <span class="adventure-text"><strong>Sân chơi kiến thức</strong><small>Sáu kiểu chơi, bao điều thú vị</small></span>
+        <span class="adventure-arrow" aria-hidden="true">↗</span>
+      </a>
+      <a class="adventure-card adventure-map" routerLink="/teacher" data-reveal>
+        <span class="adventure-icon" aria-hidden="true">✎</span>
+        <span class="adventure-text"><strong>Góc giáo viên</strong><small>Tạo bộ câu hỏi từ tệp Excel</small></span>
+        <span class="adventure-arrow" aria-hidden="true">↗</span>
+      </a>
+    </div>
   </div>
 </section>
 
 <section class="lesson-section" id="lessons" aria-labelledby="lessons-heading">
   <div class="container">
-    <div
-      class="section-heading d-flex flex-column flex-md-row justify-content-between align-items-md-end gap-3"
-    >
+    <div class="lesson-heading" data-reveal>
       <div>
-        <span class="section-kicker">THE EXPLORER'S LIBRARY</span>
-        <h2 id="lessons-heading">Pick a path to explore<span>.</span></h2>
-        <p>Small lessons, big discoveries. Start wherever your curiosity leads.</p>
+        <span class="section-kicker">BÀI HỌC THÚ VỊ</span>
+        <h2 id="lessons-heading">Hôm nay mình học gì? <span>✿</span></h2>
+        <p>Những bài học ngắn để em khám phá địa lý và lịch sử quanh mình.</p>
       </div>
-      <div class="sample-pill">✦ Sample lessons</div>
+      <span class="sample-pill">✦ 4 bài học mẫu</span>
     </div>
-
-    <div
-      class="tools d-flex flex-column flex-lg-row justify-content-between gap-3 align-items-lg-center"
-    >
-      <div class="filters d-flex flex-wrap gap-2" aria-label="Filter lessons by topic">
+    <div class="tools" data-reveal>
+      <div class="filters" aria-label="Filter lessons by topic">
         @for (category of categories; track category) {
           <button
             type="button"
@@ -47,87 +338,41 @@
           </button>
         }
       </div>
-      <label class="search-box d-flex flex-row align-items-center">
-        <span class="visually-hidden">Search lessons</span>
-        <span class="search-icon" aria-hidden="true">⌕</span>
-        <input
+      <label class="search-box"
+        ><span class="visually-hidden">Search lessons</span><span aria-hidden="true">⌕</span
+        ><input
           type="search"
-          placeholder="Search lessons..."
+          placeholder="Tìm bài học..."
           [value]="searchTerm()"
           (input)="setSearch($event)"
-        />
-      </label>
+      /></label>
     </div>
-
-    <p class="result-count" aria-live="polite">
-      Showing {{ lessons().length }} {{ lessons().length === 1 ? 'lesson' : 'lessons' }}
-    </p>
-    <div class="row g-4">
+    <p class="result-count" aria-live="polite">{{ lessons().length }} bài học đang chờ em</p>
+    <div class="lesson-grid">
       @for (lesson of lessons(); track lesson.id) {
-        <div class="col-md-6 col-xl-3">
-          <a class="lesson-card h-100" [routerLink]="['/lessons', lesson.id]">
-            <div class="card-art" [class]="'card-art ' + lesson.color">
-              <span class="art-orbit"></span
-              ><span class="art-icon" aria-hidden="true">{{ lesson.illustration }}</span>
-              <span class="art-corner" aria-hidden="true">✦</span>
-            </div>
-            <div class="card-body">
-              <span class="card-category">{{ lesson.category }}</span>
-              <h3>{{ lesson.title }}</h3>
-              <p>{{ lesson.subtitle }}</p>
-              <div class="card-meta">
-                <span>◷ {{ lesson.duration }} min</span><span>{{ lesson.level }}</span
-                ><span class="card-arrow" aria-hidden="true">↗</span>
-              </div>
-            </div>
-          </a>
-        </div>
-      } @empty {
-        <div class="col-12">
-          <div class="empty-state">
-            <span aria-hidden="true">⌕</span>
-            <h3>No lessons found</h3>
-            <p>Try another word or choose a different topic.</p>
+        <a class="lesson-card" [routerLink]="['/lessons', lesson.id]" data-reveal>
+          <div class="card-art" [class]="'card-art ' + lesson.color">
+            <svg viewBox="0 0 280 190" aria-hidden="true" focusable="false">
+              <use [attr.href]="'#lesson-art-' + lesson.color" />
+            </svg>
           </div>
+          <div class="card-body">
+            <span class="card-category">{{ lesson.category }}</span>
+            <h3>{{ lesson.title }}</h3>
+            <p>{{ lesson.subtitle }}</p>
+            <div class="card-meta">
+              <span>◷ {{ lesson.duration }} min</span><span>{{ lesson.level }}</span
+              ><span class="card-arrow" aria-hidden="true">↗</span>
+            </div>
+          </div>
+        </a>
+      } @empty {
+        <div class="empty-state">
+          <span aria-hidden="true">⌕</span>
+          <h3>Chưa tìm thấy bài học</h3>
+          <p>Thử từ khóa khác hoặc chọn một chủ đề nhé.</p>
         </div>
       }
-    </div>
-  </div>
-</section>
-
-<section class="how-section" id="how-it-works" aria-labelledby="how-heading">
-  <div class="container">
-    <div class="how-panel row g-0 align-items-center">
-      <div class="col-lg-5 how-intro">
-        <span class="section-kicker">A LITTLE ADVENTURE</span>
-        <h2 id="how-heading">Look closer.<br /><em>Learn more.</em></h2>
-        <p>
-          Each lesson gives you a simple idea to explore, something to try nearby, and a quick
-          question to check what you learned.
-        </p>
-      </div>
-      <div class="col-lg-7">
-        <div class="row g-3">
-          <div class="col-sm-4">
-            <div class="step">
-              <span class="step-icon">◉</span><strong>01 · Discover</strong>
-              <p>Choose a story that sparks your interest.</p>
-            </div>
-          </div>
-          <div class="col-sm-4">
-            <div class="step">
-              <span class="step-icon">✎</span><strong>02 · Try it</strong>
-              <p>Look for clues in a place you know.</p>
-            </div>
-          </div>
-          <div class="col-sm-4">
-            <div class="step">
-              <span class="step-icon">✓</span><strong>03 · Check in</strong>
-              <p>Answer two questions and keep exploring.</p>
-            </div>
-          </div>
-        </div>
-      </div>
     </div>
   </div>
 </section>

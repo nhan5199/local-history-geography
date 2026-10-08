@@ -5,7 +5,7 @@ export const LESSON_ROUTES: Routes = [
     path: '',
     pathMatch: 'full',
     loadComponent: () => import('./pages/lesson-list/lesson-list').then(module => module.LessonList),
-    title: 'Explore lessons · Our Place',
+    title: 'Đồng Nai ơi! · Cùng khám phá quê hương',
   },
   {
     path: 'lessons/:id',

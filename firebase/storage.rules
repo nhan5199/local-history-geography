@@ -5,5 +5,17 @@ service firebase.storage {
       allow read: if true;
       allow write: if false;
     }
+    match /published/media/book/{fileName} {
+      allow write: if request.auth != null && request.auth.token.contentEditor == true &&
+        (request.resource == null || (fileName.matches('[a-zA-Z0-9_-]+[.]pdf') &&
+          request.resource.size > 0 && request.resource.size <= 10 * 1024 * 1024 &&
+          request.resource.contentType == 'application/pdf'));
+    }
+    match /published/media/panorama/{fileName} {
+      allow write: if request.auth != null && request.auth.token.contentEditor == true &&
+        (request.resource == null || (fileName.matches('[a-zA-Z0-9_-]+[.](jpg|png)') &&
+          request.resource.size > 0 && request.resource.size <= 5 * 1024 * 1024 &&
+          request.resource.contentType.matches('image/(jpeg|png)')));
+    }
   }
 }

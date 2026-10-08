@@ -1,0 +1,56 @@
+<section class="container book-reader">
+  <nav aria-label="Điều hướng sách" class="reader-crumbs">
+    <a routerLink="/">Trang chủ</a><span aria-hidden="true">/</span>
+    <a routerLink="/books">Thư viện sách</a>
+  </nav>
+
+  @if (missing()) {
+    <div class="reader-message">
+      <h1>Không tìm thấy cuốn sách này.</h1>
+      <a routerLink="/books">Quay lại thư viện</a>
+    </div>
+  } @else {
+    <header class="reader-heading">
+      <div>
+        <span class="reader-eyebrow">ĐỌC VÀ KHÁM PHÁ</span>
+        <h1>{{ asset()?.title || 'Đang mở sách…' }}</h1>
+        @if (asset()?.description) { <p>{{ asset()?.description }}</p> }
+      </div>
+      <div class="reader-links">
+        @if (pdfUrl()) { <a [href]="pdfUrl()" target="_blank" rel="noopener noreferrer">Mở PDF gốc ↗</a> }
+        <a routerLink="/books">← Tất cả sách</a>
+      </div>
+    </header>
+
+    @if (asset()?.id === 'demo-book') {
+      <p class="demo-label">PDF mẫu của Mozilla để thử tính năng lật trang; không phải tài liệu học tập địa phương.</p>
+    }
+
+    @if (error()) {
+      <div class="reader-message" role="alert">
+        <h2>Chưa mở được sách</h2>
+        <p>{{ error() }}</p>
+        <button type="button" (click)="retry()">Thử lại</button>
+      </div>
+    }
+    @if (loading()) { <p class="reader-loading" role="status">Đang tải và chuẩn bị các trang PDF…</p> }
+
+    <section class="reader-workspace" [class.reader-hidden]="loading() || !!error()" aria-label="Trang sách">
+      @if (!readerReady()) { <p class="reader-stage-status" role="status">Đang chuẩn bị các trang sách…</p> }
+      <div #stage class="book-stage" [class.stage-loading]="!readerReady()" [class.touch-paused]="!touchReady() || navigationBusy()"></div>
+      <div class="reader-controls">
+        <button type="button" (click)="previous()" [disabled]="!readerReady() || navigationBusy() || currentPage() <= 1" aria-label="Trang trước">← <span>Trang trước</span></button>
+        <form (submit)="$event.preventDefault(); goToPage(pageInput.value)">
+          <label for="book-page-number">Trang</label>
+          <input #pageInput id="book-page-number" type="number" min="1" [max]="pageCount()" [value]="currentPage()" aria-label="Chuyển đến trang" />
+          <span>/ {{ pageCount() }}</span>
+          <button type="submit" [disabled]="!readerReady() || navigationBusy()" aria-label="Chuyển đến trang đã nhập">Đi</button>
+        </form>
+        <button type="button" (click)="next()" [disabled]="!readerReady() || navigationBusy() || currentPage() >= pageCount()" aria-label="Trang sau"><span>Trang sau</span> →</button>
+      </div>
+      @if (navigationBusy()) { <p class="reader-progress" role="status">Đang chuẩn bị trang tiếp theo…</p> }
+      <p class="reader-hint">Kéo góc trang, vuốt trên màn hình cảm ứng, hoặc dùng phím ← → để lật.</p>
+    </section>
+    @if (asset()?.attribution) { <p class="reader-attribution">Nguồn: {{ asset()?.attribution }}</p> }
+  }
+</section>

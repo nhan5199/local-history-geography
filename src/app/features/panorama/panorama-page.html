@@ -1,0 +1,77 @@
+<section class="panorama-page" aria-labelledby="panorama-title">
+  <div class="panorama-heading">
+    <div>
+      <span class="eyebrow">Khám phá mọi hướng</span>
+      <h1 id="panorama-title">Toàn cảnh 360°</h1>
+      <p>Bước vào một không gian và nhìn quanh. Kéo để xoay, cuộn hoặc chụm hai ngón tay để phóng to, rồi trở về góc nhìn ban đầu bất cứ lúc nào.</p>
+    </div>
+    <span class="panorama-badge" aria-label="Góc nhìn tương tác 360 độ">360°</span>
+  </div>
+
+  <div #viewerFrame class="viewer-frame" [class.is-fullscreen]="fullscreen()">
+    <div
+      #viewerHost
+      class="viewer-host"
+      tabindex="0"
+      role="group"
+      [attr.aria-label]="'Ảnh toàn cảnh 360 độ: ' + (selected()?.title ?? 'đang tải') + '. Dùng phím mũi tên để nhìn quanh, dấu cộng hoặc trừ để phóng to thu nhỏ, phím số không để đặt lại.'"
+      (keydown)="onKeydown($event)"
+    ></div>
+
+    @if (loadState() !== 'ready') {
+      <div class="viewer-status" [attr.role]="loadState() === 'error' ? 'alert' : 'status'">
+        @if (loadState() === 'loading') {
+          <span class="spinner" aria-hidden="true"></span>
+          <strong>Đang mở ảnh toàn cảnh…</strong>
+          <span>Chuẩn bị góc nhìn 360° cho bạn.</span>
+        } @else if (loadState() === 'empty') {
+          <span class="status-icon" aria-hidden="true">◌</span>
+          <strong>Chưa có ảnh 360°</strong>
+          <span>Thư viện đang chờ những địa điểm đầu tiên. Hãy quay lại sau nhé.</span>
+          <button type="button" class="retry-button" (click)="retry()">Tải lại</button>
+        } @else {
+          <span class="status-icon" aria-hidden="true">◌</span>
+          <strong>Chưa mở được ảnh</strong>
+          <span>{{ errorMessage() }}</span>
+          <button type="button" class="retry-button" (click)="retry()">Thử lại</button>
+        }
+      </div>
+    }
+
+    @if (loadState() === 'ready' && errorMessage()) {
+      <p class="viewer-notice" role="status">{{ errorMessage() }}</p>
+    }
+
+    <div class="viewer-toolbar" role="group" aria-label="Điều khiển ảnh 360 độ">
+      <button type="button" title="Phóng to" aria-label="Phóng to" [disabled]="loadState() !== 'ready'" (click)="zoomIn()">+</button>
+      <button type="button" title="Thu nhỏ" aria-label="Thu nhỏ" [disabled]="loadState() !== 'ready'" (click)="zoomOut()">−</button>
+      <button type="button" class="tool-text" title="Về góc nhìn đầu" aria-label="Về góc nhìn đầu" [disabled]="loadState() !== 'ready'" (click)="resetView()">Đặt lại</button>
+      <button type="button" class="tool-text" [attr.aria-label]="fullscreen() ? 'Thoát toàn màn hình' : 'Xem toàn màn hình'" [disabled]="loadState() !== 'ready' || !fullscreenAvailable" (click)="toggleFullscreen()">{{ fullscreen() ? 'Thu nhỏ' : 'Toàn màn hình' }}</button>
+    </div>
+  </div>
+
+  <div class="panorama-footer">
+    <div class="panorama-details">
+      <span class="eyebrow">Đang khám phá</span>
+      <h2>{{ selected()?.title ?? 'Thư viện ảnh 360°' }}</h2>
+      @if (selected()?.description) { <p>{{ selected()?.description }}</p> }
+      @if (selected()?.id === 'demo-panorama') {
+        <p class="attribution">Ảnh mẫu: <a href="https://pannellum.org/documentation/examples/simple-example/" target="_blank" rel="noopener noreferrer">Pannellum / Matthew Petroff</a> · <a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank" rel="noopener noreferrer">CC BY-SA 4.0</a></p>
+      } @else if (selected()?.attribution) {
+        <p class="attribution">Nguồn ảnh: {{ selected()?.attribution }}</p>
+      }
+    </div>
+    <p class="viewer-hint">Kéo hoặc chạm để nhìn quanh · Cuộn hoặc chụm để phóng to · Dùng phím mũi tên để di chuyển</p>
+  </div>
+
+  @if (assets().length > 1) {
+    <div class="panorama-list" aria-label="Các ảnh 360 độ có sẵn">
+      @for (asset of assets(); track asset.id) {
+        <button type="button" [class.active]="selected()?.id === asset.id" [attr.aria-pressed]="selected()?.id === asset.id" (click)="selectAsset(asset)">
+          <span class="list-icon" aria-hidden="true">360°</span>
+          <span>{{ asset.title }}</span>
+        </button>
+      }
+    </div>
+  }
+</section>

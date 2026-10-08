@@ -1,0 +1,86 @@
+<main class="questions-page">
+  <section class="intro">
+    <div class="wrap intro-inner">
+      <div>
+        <span class="eyebrow">✦ GÓC LUYỆN TẬP</span>
+        <h1>Thử tài cùng <em>Đồng Nai!</em></h1>
+        <p>Chọn một bộ câu hỏi, tìm đáp án rồi xem mình đã hiểu quê hương đến đâu nhé.</p>
+      </div>
+      <svg class="art" viewBox="0 0 240 190" aria-hidden="true" focusable="false">
+        <path d="M30 44q45-25 91 3 40-28 87-3v111q-45-17-87 12-45-29-91-12Z" fill="#fff9e5" stroke="#315b4c" stroke-width="5" stroke-linejoin="round"/>
+        <path d="M121 48v119M49 69h48M49 85h38m66-16h38m-38 16h30" stroke="#78a58b" stroke-width="4" stroke-linecap="round"/>
+        <path d="m95 111 18 18 39-46" fill="none" stroke="#e87450" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="m29 20-5-12m178 6 9-11m15 93 12 3" stroke="#d48945" stroke-width="5" stroke-linecap="round"/>
+      </svg>
+    </div>
+  </section>
+  <section class="wrap content" aria-label="Bộ câu hỏi">
+    @if (activeSet(); as set) {
+      <button type="button" class="back" (click)="close()">← Chọn bộ câu hỏi khác</button>
+      <div class="set-heading">
+        <div><span class="eyebrow">{{ set.id === demo.id ? 'BÀI TẬP MẪU' : 'BỘ CÂU HỎI' }}</span><h2 id="active-set-title" tabindex="-1">{{ set.title }}</h2></div>
+        <p class="score">{{ set.questions.length }} câu hỏi</p>
+      </div>
+      @for (question of set.questions; track question.id; let index = $index) {
+        <article class="question-card" [attr.aria-labelledby]="'question-' + index">
+          <div class="question-top"><span class="number">{{ index + 1 }}</span><span class="type">{{ labels[question.type] }}</span></div>
+          <h3 [id]="'question-' + index">{{ question.prompt }}</h3>
+          @if (question.type === 'single' || question.type === 'multiple' || question.type === 'yesno') {
+            <p class="hint">{{ question.type === 'multiple' ? 'Em có thể chọn nhiều đáp án.' : 'Chọn một đáp án.' }}</p>
+            <div class="options" [class.long-options]="longOptions(question)" [attr.role]="question.type === 'multiple' ? 'group' : 'radiogroup'" [attr.aria-labelledby]="'question-' + index">
+              @for (option of question.options; track option; let optionIndex = $index) {
+                <label class="option" [class.chosen]="selected(question, option)"
+                  [class.answer-correct]="submitted() && correctOption(question, option)"
+                  [class.answer-wrong]="submitted() && selected(question, option) && !correctOption(question, option)">
+                  <input [type]="question.type === 'multiple' ? 'checkbox' : 'radio'"
+                    [name]="'question-' + index" [checked]="selected(question, option)" [disabled]="submitted()"
+                    (change)="choose(question, option)" />
+                  <span>{{ option }}</span>
+                </label>
+              }
+            </div>
+            @if (submitted()) {
+              <div class="feedback" [class.correct]="isCorrect(question)" role="status">
+                <strong>{{ isCorrect(question) ? 'Giỏi lắm, em trả lời đúng!' : !(selection()[question.id]?.length) ? 'Em chưa trả lời câu này.' : 'Mình cùng xem lại nhé!' }}</strong>
+                @if (!isCorrect(question)) { <span>Đáp án đúng: {{ correctAnswer(question) }}.</span> }
+                @if (question.explanation) { <span>{{ question.explanation }}</span> }
+              </div>
+            }
+          } @else {
+            <p class="hint">Dạng câu hỏi này dành cho trò chơi tương tác.</p>
+          }
+        </article>
+      } @empty {
+        <p class="status">Bộ câu hỏi này chưa có câu nào.</p>
+      }
+      @if (set.questions.length) {
+        <div class="practice-actions">
+          @if (submitted()) {
+            <div class="result" id="practice-result" tabindex="-1" role="status">
+              <strong>Em làm đúng {{ score().correct }}/{{ score().total }} câu.</strong>
+              @if (score().unanswered) { <span>{{ score().unanswered }} câu chưa trả lời được tính là chưa đúng.</span> }
+            </div>
+            <button type="button" class="submit" (click)="retry()">Làm lại</button>
+          } @else {
+            <button type="button" class="submit" (click)="submit()">Lưu bài làm</button>
+          }
+        </div>
+      }
+    } @else {
+      <div class="list-heading"><div><h2 id="question-catalog-title" tabindex="-1">Chọn bài để bắt đầu</h2><p>Ba kiểu câu hỏi: một đáp án, nhiều đáp án và đúng hoặc sai.</p></div><a routerLink="/games">Đến góc trò chơi ↗</a></div>
+      @if (loading()) { <p class="status" role="status">Đang tải bộ câu hỏi…</p> }
+      @else if (error()) {
+        <div class="status error" role="alert"><p>{{ error() }}</p><button type="button" (click)="load()">Thử tải lại</button></div>
+      } @else if (sets().length === 0) { <p class="status">Chưa có bộ câu hỏi nào từ thư viện. Em có thể thử bài mẫu bên dưới.</p> }
+      <div class="set-grid">
+        @for (set of sets(); track set.id) {
+          <button type="button" class="set-card" (click)="open(set)">
+            <span class="set-icon" aria-hidden="true">✎</span><strong>{{ set.title }}</strong>
+            <span>{{ set.questions.length }} câu hỏi <span aria-hidden="true">↗</span></span>
+          </button>
+        }
+      </div>
+      <div class="demo-block"><div><span class="eyebrow">BÀI TẬP MẪU</span><h3>Thử trước một vòng nhé!</h3><p>Dữ liệu minh họa để làm quen cách trả lời; không phải bài học chính thức.</p></div><button type="button" class="demo-button" (click)="open(demo)">Làm bài mẫu →</button></div>
+    }
+  </section>
+</main>

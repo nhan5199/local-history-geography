@@ -30,6 +30,15 @@ npm test -- --watch=false
 Production output: `dist/local-history-geography/browser`. Your web host must rewrite
 non-file routes to `index.html` for client-side routing.
 
+## Books and panoramas
+
+Visit `/books` for the PDF flipbook library and `/panorama` for a touch-friendly
+360° view. Books and panoramas now read their catalogs and media from Firebase,
+following the owner's Blaze upgrade. Bundled files remain publishing sources.
+See [media setup and uploads](docs/media-library.md)
+for `MediaLibraryService`, emulator testing, and authenticated cloud publishing.
+Project collaboration and review preferences live in [AGENTS.md](AGENTS.md).
+
 ## Folder structure
 
 See [the folder tree and architecture guide](docs/project-structure.md) for the
@@ -37,7 +46,8 @@ full structure, folder responsibilities, and guidance on adding features.
 
 ## Learning companion
 
-Milo is available in the bottom corner on every page. Use Hide/Show, switch corners,
+Milo is available in the bottom corner outside the immersive book and panorama viewers,
+where the helper is hidden to keep page corners and controls clear. Use Hide/Show, switch corners,
 ask a question about a sample lesson, or select Listen to hear an answer. The guide
 retrieves lesson passages and includes source links; it is not a generative AI service.
 See [companion setup and customization](docs/companion.md) to replace the image/GIF.
@@ -73,8 +83,9 @@ To prepare live content in the [Firebase console](https://console.firebase.googl
    paths. Include loading, empty, and error states in the future live-data UI.
 
 The query helper does not upload files or write data. The included rules allow
-published-content queries and reading files in `published/`; client writes are
-denied. Administer content through the console. Unpublishing a lesson does not
+published-content queries and reading files in `published/`; media writes require
+an authenticated editor custom claim. Other client writes are denied. Administer
+content through the console. Unpublishing a lesson does not
 automatically unpublish its files. Keep only public assets in `published/`.
 
 Cloud Storage requires the **Blaze billing plan**; see the

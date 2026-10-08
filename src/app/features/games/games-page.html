@@ -1,0 +1,147 @@
+<main class="games-page container">
+  <a class="back-link" routerLink="/">← Trang chủ</a>
+
+  @if (!activeSet()) {
+    <header class="intro">
+      <span class="eyebrow">SÂN KHẤU KIẾN THỨC</span>
+      <h1>Đến lượt bạn tỏa sáng!</h1>
+      <p>Chọn một vòng chơi, khám phá Đồng Nai qua từng câu hỏi và ghi điểm theo cách của bạn.</p>
+    </header>
+    <section aria-labelledby="game-catalog-title">
+      <h2 id="game-catalog-title" tabindex="-1">Vòng chơi của lớp mình</h2>
+      @if (loading()) {
+        <p class="catalog-message" role="status">Đang tải các vòng chơi…</p>
+      } @else if (error()) {
+        <div class="catalog-message" role="alert">
+          <p>Chưa tải được vòng chơi từ thư viện. Bạn có thể thử lại.</p>
+          <button class="secondary" type="button" (click)="load()">Thử tải lại</button>
+        </div>
+      } @else if (sets().length === 0) {
+        <p class="catalog-message">Thư viện chưa có vòng chơi nào. Hãy ghé lại sau nhé!</p>
+      } @else {
+        <div class="catalog-grid">
+          @for (set of sets(); track set.id) {
+            <article class="game-card">
+              <span class="card-icon" aria-hidden="true">★</span>
+              <div><span class="eyebrow">{{ set.questions.length }} CÂU HỎI</span><h3>{{ set.title }}</h3></div>
+              <button class="primary" type="button" [disabled]="set.questions.length === 0" (click)="start(set)">Bắt đầu chơi <span aria-hidden="true">→</span></button>
+            </article>
+          }
+        </div>
+      }
+    </section>
+    @if (demoSets.length) {
+      <section class="demo-section" aria-labelledby="demo-title">
+        <h2 id="demo-title">Chơi thử với câu hỏi mẫu</h2>
+        <p>Đây là bộ câu hỏi minh họa cách chơi, không phải tài liệu học tập chính thức của Đồng Nai.</p>
+        @for (set of demoSets; track set.id) {
+          <button class="secondary" type="button" (click)="start(set)">Chơi thử: {{ set.title }} <span aria-hidden="true">→</span></button>
+        }
+      </section>
+    }
+  } @else {
+    <div class="stage" [class.is-finished]="finished()">
+      <div class="stage-lights" aria-hidden="true"><span>✦</span><span>✦</span><span>✦</span></div>
+      <div class="stage-top">
+        <button class="stage-back" type="button" (click)="backToCatalog()">← Chọn vòng khác</button>
+        <span class="score" aria-label="Điểm số">⭐ {{ score() }} điểm</span>
+      </div>
+
+      @if (finished()) {
+        <section class="result" aria-live="polite">
+          <span class="result-star" aria-hidden="true">🏆</span>
+          <span class="eyebrow">HOÀN THÀNH VÒNG CHƠI</span>
+          <h1 tabindex="-1">Bạn đã tỏa sáng!</h1>
+          <p>Bạn đạt <strong>{{ score() }}/{{ rounds().length * 10 }} điểm</strong>. Mỗi câu hỏi là một điều mới để khám phá.</p>
+          <div class="result-actions">
+            <button class="primary" type="button" (click)="start(activeSet()!)">Chơi lại</button>
+            <button class="secondary" type="button" (click)="backToCatalog()">Chọn vòng khác</button>
+          </div>
+        </section>
+      } @else if (question(); as current) {
+        <div class="round-meta"><span>CÂU {{ index() + 1 }} / {{ rounds().length }}</span><span>{{ activeSet()!.title }}</span></div>
+        <div class="progress-track" role="progressbar" [attr.aria-valuenow]="index() + 1" [attr.aria-valuemax]="rounds().length" aria-valuemin="1" aria-label="Tiến độ vòng chơi"><span [style.width.%]="progress() + 100 / rounds().length"></span></div>
+        <section class="question-panel" aria-labelledby="question-title">
+          <span class="type-label">
+            @switch (current.type) {
+              @case ('single') { Chọn một đáp án }
+              @case ('multiple') { Chọn nhiều đáp án }
+              @case ('yesno') { Đúng hay sai? }
+              @case ('order') { Sắp xếp theo thứ tự }
+              @case ('match') { Ghép cặp phù hợp }
+              @case ('fill') { Điền từ còn thiếu }
+            }
+          </span>
+          <h2 id="question-title" tabindex="-1">{{ current.prompt }}</h2>
+
+          @if (current.type === 'single' || current.type === 'multiple' || current.type === 'yesno') {
+            <div class="option-grid" role="group" [attr.aria-label]="current.type === 'multiple' ? 'Chọn các đáp án đúng' : 'Chọn một đáp án'">
+              @for (option of current.type === 'yesno' ? ['true', 'false'] : displayOptions(); track $index) {
+                <button class="option" type="button" [class.picked]="isSelected(option)" [disabled]="checked()" [attr.aria-pressed]="isSelected(option)" (click)="choose(option)">
+                  <span class="option-marker" aria-hidden="true">{{ isSelected(option) ? '✓' : $index + 1 }}</span>
+                  {{ current.type === 'yesno' ? (option === 'true' ? 'Đúng' : 'Sai') : option }}
+                </button>
+              }
+            </div>
+          }
+
+          @if (current.type === 'order') {
+            <p class="instruction" id="order-instruction">Kéo thả các thẻ để sắp xếp. Dùng phím mũi tên lên, xuống khi chọn thẻ bằng bàn phím.</p>
+            <ol class="order-list">
+              @for (item of ordered(); track $index) {
+                <li [attr.data-order-index]="$index" [class.is-dragging]="dragging() === $index" [class.is-drop-target]="dropTarget() === $index && dragging() !== $index" [style.transform]="dragging() === $index ? 'translate(' + dragOffset().x + 'px, ' + dragOffset().y + 'px) scale(1.03)' : null" [attr.tabindex]="checked() ? -1 : 0" [attr.aria-label]="'Vị trí ' + ($index + 1) + ': ' + item" aria-describedby="order-instruction" (pointerdown)="orderPointerDown($event, $index)" (pointermove)="orderPointerMove($event)" (pointerup)="orderPointerUp($event)" (pointercancel)="cancelDrag()" (keydown)="orderKeydown($event, $index)">
+                  <span class="order-number">{{ $index + 1 }}</span><span class="order-text">{{ item }}</span><span class="order-grip" aria-hidden="true">⠿</span>
+                </li>
+              }
+            </ol>
+          }
+
+          @if (current.type === 'match') {
+            <p class="instruction">Chọn một thẻ bên trái, rồi chọn thẻ ghép cùng ở bên phải. Chọn lại một thẻ đã ghép để gỡ đường nối.</p>
+            <div class="match-grid">
+              <svg class="match-lines" aria-hidden="true" focusable="false">
+                @for (line of matchLines(); track line.left) { <path [attr.d]="line.path" /> }
+              </svg>
+              <div class="match-column" aria-label="Thẻ bên trái">
+                @for (item of current.options; track $index) {
+                  <button class="match-card" type="button" [attr.data-match-left]="$index" [class.picked]="selectedLeft() === $index" [class.assigned]="matches()[$index] !== null" [disabled]="checked()" [attr.aria-pressed]="selectedLeft() === $index" [attr.aria-label]="item + '. ' + matchText($index) + (matches()[$index] !== null ? '. Chọn để gỡ cặp' : '')" (click)="chooseLeft($index)">
+                    <strong>{{ item }}</strong><small>{{ matchText($index) }}</small>
+                  </button>
+                }
+              </div>
+              <div class="match-column" aria-label="Thẻ bên phải">
+                @for (choice of matchChoices(); track choice.id) {
+                  <button class="match-card right-card" type="button" [attr.data-match-right]="choice.id" [class.assigned]="rightAssigned(choice.id)" [disabled]="checked() || (selectedLeft() === null && !rightAssigned(choice.id))" [attr.aria-label]="choice.text + (rightAssigned(choice.id) ? '. Chọn để gỡ cặp' : '')" (click)="chooseRight(choice.id)">{{ choice.text }}</button>
+                }
+              </div>
+            </div>
+          }
+
+          @if (current.type === 'fill') {
+            <label class="fill-label" for="game-fill">Từ còn thiếu</label>
+            <p class="fill-hint" id="fill-hint">Chạm vào các ô rồi gõ câu trả lời.</p>
+            <div class="fill-board">
+              <div class="fill-slots" aria-hidden="true">
+                @for (slot of fillSlots(); track slot.key) {
+                  <span [class.word-gap]="slot.space">{{ slot.space ? ' ' : slot.text }}</span>
+                }
+              </div>
+              <input id="game-fill" class="fill-overlay-input" type="text" autocomplete="off" spellcheck="false" maxlength="160" aria-describedby="fill-hint" [disabled]="checked()" [ngModel]="filled()" (ngModelChange)="filled.set($event)" (keydown.enter)="check()" />
+            </div>
+          }
+
+          @if (checked()) {
+            <div class="feedback" [class.incorrect]="!correct()" role="status" aria-live="polite">
+              <strong>{{ correct() ? 'Chính xác! +10 điểm ⭐' : 'Bạn đã thử rất tốt! 🌱' }}</strong>
+              @if (!correct()) { <p>Đáp án: {{ answerText(current) }}</p> }
+              @if (current.explanation) { <p>{{ current.explanation }}</p> }
+            </div>
+            <button class="primary action" type="button" (click)="next()">{{ index() + 1 === rounds().length ? 'Xem kết quả' : 'Câu tiếp theo →' }}</button>
+          } @else {
+            <button class="primary action" type="button" [disabled]="!ready()" (click)="check()">Kiểm tra đáp án</button>
+          }
+        </section>
+      }
+    </div>
+  }
+</main>

@@ -1,0 +1,26 @@
+:host { display: block; }
+.games-page { min-height: 76vh; padding-bottom: 5rem; }
+.back-link { display: inline-block; margin: 1.5rem 0 2rem; color: #376856; font-weight: 800; text-decoration: none; }
+.back-link:hover { text-decoration: underline; }
+.intro { max-width: 48rem; margin-bottom: 2.7rem; }
+.eyebrow { color: #aa613d; font-size: .75rem; font-weight: 900; letter-spacing: .14em; }
+h1, h2, h3, p { margin-top: 0; }
+h1, h2, h3 { font-family: Georgia, 'Times New Roman', serif; }
+.intro h1 { margin: .6rem 0 1rem; font-size: clamp(2.7rem, 6vw, 5rem); line-height: 1.06; letter-spacing: -.05em; }
+.intro p, .demo-section p { color: #5a7067; line-height: 1.6; }
+h2 { font-size: clamp(1.6rem, 3vw, 2.2rem); }
+.catalog-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 290px), 1fr)); gap: 1.1rem; }
+.game-card, .catalog-message, .demo-section { border: 1px solid #dfebdd; border-radius: 1.25rem; background: #fffefa; box-shadow: 0 10px 26px #315b4610; }
+.game-card { display: flex; flex-direction: column; gap: 1.2rem; padding: 1.5rem; }
+.game-card h3 { margin: .5rem 0 0; font-size: 1.6rem; }
+.card-icon { display: grid; place-items: center; width: 3.5rem; height: 3.5rem; border-radius: 1rem; background: #ffe8b1; color: #965c0a; font-size: 2rem; }
+.catalog-message { padding: 1.6rem; color: #4b665a; }
+.catalog-message p { margin-bottom: .8rem; }
+.demo-section { margin-top: 2.5rem; padding: 1.5rem; background: #f2f8ef; }
+.demo-section h2 { margin-bottom: .5rem; }
+button { cursor: pointer; }
+button:disabled { cursor: default; opacity: .55; }
+.primary, .secondary { min-height: 3rem; border-radius: .75rem; padding: .7rem 1.2rem; font-weight: 900; transition: transform .18s, box-shadow .18s; }
+.primary { border: 2px solid #285f4d; background: #285f4d; color: white; }
+.secondary { border: 2px solid #285f4d; background: #fffefa; color: #285f4d; }
+.primary:not(:disabled):hover, .secondary:not(:disabled):hover { transform: translateY(-2px); box-shadow: 0 8px 18px #1b523929; }

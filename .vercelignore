@@ -1,0 +1,10 @@
+.git
+.angular
+node_modules
+dist
+tmp
+coverage
+.env
+.env.*
+*service-account*.json
+firebase-debug*.log

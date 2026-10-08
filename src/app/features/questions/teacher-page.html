@@ -1,0 +1,58 @@
+<main class="teacher-page">
+  <header class="hero"><div class="wrap"><span class="eyebrow">✦ DÀNH CHO THẦY CÔ</span><h1>Góc tạo câu hỏi</h1><p>Chuẩn bị tệp Excel, xem trước từng câu và đăng bài cho các em luyện tập.</p></div></header>
+  <div class="wrap body">
+    <section class="template-card" aria-labelledby="template-title">
+      <div><h2 id="template-title">Tải mẫu Excel</h2><p>Chọn loại nội dung rồi điền câu hỏi theo các cột trong tệp mẫu.</p></div>
+      <div class="template-actions">
+        <div class="mode-switch" role="group" aria-label="Loại tệp mẫu">
+          <button type="button" [class.active]="mode() === 'questions'" [attr.aria-pressed]="mode() === 'questions'" [disabled]="busy()" (click)="changeMode('questions')">Bộ câu hỏi</button>
+          <button type="button" [class.active]="mode() === 'game'" [attr.aria-pressed]="mode() === 'game'" [disabled]="busy()" (click)="changeMode('game')">Trò chơi</button>
+        </div>
+        <button type="button" class="download" [disabled]="templateBusy()" (click)="downloadTemplate()">{{ templateBusy() ? 'Đang tạo mẫu…' : '↓ Tải tệp .xlsx mẫu' }}</button>
+      </div>
+    </section>
+
+    @if (error()) { <p class="notice error" role="alert">{{ error() }}</p> }
+    @if (success()) { <p class="notice success" role="status">{{ success() }}</p> }
+
+    @if (!auth.ready() && !error()) {
+      <div class="panel" role="status">Đang kiểm tra tài khoản giáo viên…</div>
+    } @else if (auth.ready() && auth.user() && !auth.isTeacher()) {
+      <section class="panel" aria-labelledby="permission-title">
+        <span class="panel-icon" aria-hidden="true">🔒</span><h2 id="permission-title">Chưa có quyền biên tập</h2>
+        <p>Tài khoản này đã đăng nhập nhưng chưa được cấp quyền giáo viên để đăng câu hỏi. Thầy cô hãy liên hệ người quản trị.</p>
+        <button type="button" class="secondary" [disabled]="busy()" (click)="logout()">Đăng xuất</button>
+      </section>
+    } @else if (auth.ready() && !auth.user()) {
+      <section class="panel" aria-labelledby="login-title">
+        <span class="panel-icon" aria-hidden="true">✎</span><h2 id="login-title">Đăng nhập giáo viên</h2>
+        <p>Chỉ tài khoản được cấp quyền mới có thể nhập và đăng bộ câu hỏi.</p>
+        <form (submit)="$event.preventDefault(); login()">
+          <label for="teacher-username">Tên đăng nhập hoặc email</label>
+          <input id="teacher-username" name="username" type="text" autocomplete="username" required [value]="username()" (input)="username.set($any($event.target).value)" />
+          <label for="teacher-password">Mật khẩu</label>
+          <input id="teacher-password" name="password" type="password" autocomplete="current-password" required [value]="password()" (input)="password.set($any($event.target).value)" />
+          <button type="submit" class="primary" [disabled]="busy() || !username().trim() || !password()">{{ busy() ? 'Đang đăng nhập…' : 'Đăng nhập →' }}</button>
+        </form>
+      </section>
+    } @else if (auth.isTeacher()) {
+      <section class="panel editor" aria-labelledby="editor-title">
+        <div class="editor-head"><div><span class="eyebrow">TÀI KHOẢN GIÁO VIÊN</span><h2 id="editor-title">Nhập bộ {{ mode() === 'questions' ? 'câu hỏi' : 'trò chơi' }}</h2><p>Chọn tệp .xlsx theo mẫu phía trên. Các câu hợp lệ sẽ hiện ra để thầy cô kiểm tra trước khi đăng.</p></div><button type="button" class="secondary" [disabled]="busy()" (click)="logout()">Đăng xuất</button></div>
+        <label for="question-title">Tên bộ câu hỏi <span aria-hidden="true">*</span></label>
+        <input id="question-title" type="text" maxlength="100" [value]="title()" (input)="title.set($any($event.target).value)" placeholder="Ví dụ: Khám phá sông Đồng Nai" />
+        <label for="question-file">Tệp Excel .xlsx <span aria-hidden="true">*</span></label>
+        <input #fileInput id="question-file" type="file" accept=".xlsx,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" [disabled]="busy()" (change)="chooseFile($event)" />
+        @if (busy() && fileName() && !preview().length) { <p role="status">Đang kiểm tra {{ fileName() }}…</p> }
+        @if (preview().length) {
+          <div class="preview-head"><h3>Xem trước {{ preview().length }} câu đã kiểm tra</h3><span>{{ fileName() }}</span></div>
+          <div class="table-scroll"><table><thead><tr><th scope="col">STT</th><th scope="col">Kiểu</th><th scope="col">Câu hỏi</th><th scope="col">Lựa chọn</th><th scope="col">Đáp án</th><th scope="col">Giải thích</th></tr></thead><tbody>
+            @for (question of preview(); track question.id; let index = $index) {
+              <tr><th scope="row">{{ index + 1 }}</th><td>{{ labels[question.type] }}</td><td>{{ question.prompt }}</td><td>{{ question.options.join(' · ') || '—' }}</td><td>{{ question.type === 'yesno' ? (question.answers[0] === 'true' ? 'Đúng' : 'Sai') : question.answers.join(' · ') }}</td><td>{{ question.explanation || '—' }}</td></tr>
+            }
+          </tbody></table></div>
+        }
+        <div class="publish-row"><p>Chỉ khi thầy cô bấm đăng, bộ câu hỏi mới xuất hiện trong thư viện.</p><button type="button" class="primary" [disabled]="busy() || !title().trim() || !preview().length" (click)="publish(fileInput)">{{ busy() ? 'Đang xử lý…' : 'Đăng bộ câu hỏi →' }}</button></div>
+      </section>
+    }
+  </div>
+</main>

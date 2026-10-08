@@ -1,7 +1,90 @@
 {
-  "rules": {
-    ".read": false,
-    ".write": false,
-    "samples": { ".read": true, ".write": true }
-  }
+    "rules":  {
+                  ".read":  false,
+                  ".write":  false,
+                  "samples":  {
+                                  ".read":  true,
+                                  ".write":  true
+                              },
+                  "media":  {
+                                "$kind":  {
+                                              ".indexOn":  [
+                                                               "published"
+                                                           ],
+                                              ".read":  "query.orderByChild === \u0027published\u0027 \u0026\u0026 query.equalTo === true \u0026\u0026 query.limitToFirst !== null \u0026\u0026 query.limitToFirst \u003c= 24",
+                                              ".write":  "$kind === \u0027book\u0027 || $kind === \u0027panorama\u0027"
+                                          }
+                            },
+                  "teachers":  {
+                                   "$uid":  {
+                                                ".read":  "auth != null \u0026\u0026 auth.uid === $uid",
+                                                ".write":  false
+                                            }
+                               },
+                  "questionSets":  {
+                                       ".indexOn":  [
+                                                        "mode"
+                                                    ],
+                                       ".read":  "query.orderByChild === \u0027mode\u0027 \u0026\u0026 (query.equalTo === \u0027questions\u0027 || query.equalTo === \u0027game\u0027) \u0026\u0026 query.limitToFirst !== null \u0026\u0026 query.limitToFirst \u003c= 30",
+                                       "$id":  {
+                                                   ".read":  "auth != null \u0026\u0026 (auth.token.contentEditor === true || root.child(\u0027teachers\u0027).child(auth.uid).val() === true)",
+                                                   ".write":  "auth != null \u0026\u0026 (auth.token.contentEditor === true || root.child(\u0027teachers\u0027).child(auth.uid).val() === true) \u0026\u0026 !data.exists() \u0026\u0026 newData.exists() \u0026\u0026 ((newData.child(\u0027mode\u0027).val() === \u0027questions\u0027 \u0026\u0026 $id.matches(/^questions-([0-9]|[12][0-9])$/)) || (newData.child(\u0027mode\u0027).val() === \u0027game\u0027 \u0026\u0026 $id.matches(/^game-([0-9]|[12][0-9])$/)))",
+                                                   ".validate":  "newData.hasChildren([\u0027id\u0027, \u0027title\u0027, \u0027mode\u0027, \u0027questions\u0027, \u0027createdAt\u0027, \u0027createdBy\u0027, \u0027published\u0027]) \u0026\u0026 newData.child(\u0027id\u0027).val() === $id \u0026\u0026 newData.child(\u0027createdBy\u0027).val() === auth.uid \u0026\u0026 newData.child(\u0027published\u0027).val() === true",
+                                                   "id":  {
+                                                              ".validate":  "newData.isString() \u0026\u0026 newData.val().matches(/^[a-zA-Z0-9_-]{1,80}$/)"
+                                                          },
+                                                   "title":  {
+                                                                 ".validate":  "newData.isString() \u0026\u0026 newData.val().length \u003e 0 \u0026\u0026 newData.val().length \u003c= 120"
+                                                             },
+                                                   "mode":  {
+                                                                ".validate":  "newData.val() === \u0027questions\u0027 || newData.val() === \u0027game\u0027"
+                                                            },
+                                                   "published":  {
+                                                                     ".validate":  "newData.val() === true"
+                                                                 },
+                                                   "createdAt":  {
+                                                                     ".validate":  "newData.isNumber() \u0026\u0026 newData.val() \u003e 0 \u0026\u0026 newData.val() \u003c= now + 300000"
+                                                                 },
+                                                   "createdBy":  {
+                                                                     ".validate":  "newData.val() === auth.uid"
+                                                                 },
+                                                   "questions":  {
+                                                                     ".validate":  "newData.hasChild(\u00270\u0027) \u0026\u0026 !newData.hasChild(\u0027100\u0027)",
+                                                                     "$index":  {
+                                                                                    ".validate":  "($index === \u00270\u0027 || $index.matches(/^[1-9][0-9]?$/)) \u0026\u0026 newData.hasChildren([\u0027id\u0027, \u0027type\u0027, \u0027prompt\u0027, \u0027answers\u0027, \u0027explanation\u0027]) \u0026\u0026 ((newData.child(\u0027type\u0027).val() === \u0027fill\u0027 \u0026\u0026 !newData.hasChild(\u0027options\u0027)) || (newData.child(\u0027type\u0027).val() !== \u0027fill\u0027 \u0026\u0026 newData.hasChild(\u0027options\u0027))) \u0026\u0026 (newData.child(\u0027type\u0027).val() === \u0027single\u0027 || newData.child(\u0027type\u0027).val() === \u0027multiple\u0027 || newData.child(\u0027type\u0027).val() === \u0027yesno\u0027 || (newData.parent().parent().child(\u0027mode\u0027).val() === \u0027game\u0027 \u0026\u0026 (newData.child(\u0027type\u0027).val() === \u0027order\u0027 || newData.child(\u0027type\u0027).val() === \u0027match\u0027 || newData.child(\u0027type\u0027).val() === \u0027fill\u0027)))",
+                                                                                    "id":  {
+                                                                                               ".validate":  "newData.isString() \u0026\u0026 newData.val().matches(/^[a-zA-Z0-9_-]{1,80}$/)"
+                                                                                           },
+                                                                                    "type":  {
+                                                                                                 ".validate":  "newData.val() === \u0027single\u0027 || newData.val() === \u0027multiple\u0027 || newData.val() === \u0027yesno\u0027 || newData.val() === \u0027order\u0027 || newData.val() === \u0027match\u0027 || newData.val() === \u0027fill\u0027"
+                                                                                             },
+                                                                                    "prompt":  {
+                                                                                                   ".validate":  "newData.isString() \u0026\u0026 newData.val().length \u003e 0 \u0026\u0026 newData.val().length \u003c= 500"
+                                                                                               },
+                                                                                    "explanation":  {
+                                                                                                        ".validate":  "newData.isString() \u0026\u0026 newData.val().length \u003c= 500"
+                                                                                                    },
+                                                                                    "options":  {
+                                                                                                    ".validate":  "newData.hasChild(\u00270\u0027) \u0026\u0026 !newData.hasChild(\u002710\u0027)",
+                                                                                                    "$option":  {
+                                                                                                                    ".validate":  "$option.matches(/^[0-9]$/) \u0026\u0026 newData.isString() \u0026\u0026 newData.val().length \u003e 0 \u0026\u0026 newData.val().length \u003c= 160"
+                                                                                                                }
+                                                                                                },
+                                                                                    "answers":  {
+                                                                                                    ".validate":  "newData.hasChild(\u00270\u0027) \u0026\u0026 !newData.hasChild(\u002710\u0027)",
+                                                                                                    "$answer":  {
+                                                                                                                    ".validate":  "$answer.matches(/^[0-9]$/) \u0026\u0026 newData.isString() \u0026\u0026 newData.val().length \u003e 0 \u0026\u0026 newData.val().length \u003c= 160"
+                                                                                                                }
+                                                                                                },
+                                                                                    "$other":  {
+                                                                                                   ".validate":  false
+                                                                                               }
+                                                                                }
+                                                                 },
+                                                   "$other":  {
+                                                                  ".validate":  false
+                                                              }
+                                               }
+                                   }
+              }
 }

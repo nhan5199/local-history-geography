@@ -1,0 +1,11 @@
+.option.answer-correct {
+  background: #dcefdc;
+  border-color: #2d7b45;
+  color: #235835;
+}
+.option.answer-wrong {
+  background: #fde5e5;
+  border-color: #b52c36;
+  color: #84232b;
+}
+.option.answer-wrong input { accent-color: #b52c36; }
