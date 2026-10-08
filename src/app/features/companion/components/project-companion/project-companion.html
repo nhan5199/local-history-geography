@@ -1,7 +1,4 @@
-<aside class="companion" [class.on-left]="side() === 'left'" [class.is-open]="open()" aria-label="Learning companion">
-  @if (hidden()) {
-    <button #restoreButton type="button" class="restore" (click)="show()">✦ Show {{ character.name }}</button>
-  } @else {
+<aside class="companion" [class.on-left]="character.defaultSide === 'left'" [class.is-open]="open()" aria-label="Learning companion">
     @if (open()) {
       <section id="milo-panel" class="guide-panel" role="dialog" aria-modal="false" aria-labelledby="milo-title">
         <header class="panel-header">
@@ -45,10 +42,6 @@
       </section>
     }
     <div class="character-dock">
-      <div class="dock-actions">
-        <button type="button" (click)="move()" [attr.aria-label]="'Move ' + character.name + (side() === 'right' ? ' to bottom left' : ' to bottom right')" [title]="side() === 'right' ? 'Move left' : 'Move right'">{{ side() === 'right' ? '←' : '→' }}</button>
-        <button type="button" (click)="hide()" [attr.aria-label]="'Hide ' + character.name">Hide</button>
-      </div>
       <button #launcher type="button" class="character-button" (click)="togglePanel()" aria-controls="milo-panel" aria-haspopup="dialog"
         [attr.aria-expanded]="open()" [attr.aria-label]="open() ? 'Close ' + character.name + ' question panel' : 'Ask ' + character.name + ' a question'">
         @if (imageFailed()) { <span class="avatar-fallback" aria-hidden="true">✦</span> }
@@ -60,5 +53,4 @@
         <span class="character-caption">{{ open() ? 'Here to help!' : 'Ask ' + character.name }} <span aria-hidden="true">✦</span></span>
       </button>
     </div>
-  }
 </aside>

@@ -28,10 +28,10 @@ export class LessonGuide {
       return say('Open any lesson and scroll to “What did you discover?”. Choose one answer for each question, then select “Check answers”. You’ll see explanations and can try again. Your quiz answers reset when you reload or change lessons.');
     }
     if (/\b(save|saved|remember|progress)\b/.test(query)) {
-      return say('Your quiz answers and our conversation aren’t saved between visits. Only my hidden/shown setting and screen position are remembered on this browser.');
+      return say('Your quiz answers and our conversation aren’t saved between visits. Milo does not store position or visibility preferences.');
     }
     if (/\b(hide|move|position|voice|speak|listen|gif|character)\b/.test(query)) {
-      return say(`Use Hide to tuck me away, then “Show ${COMPANION_CONFIG.name}” to bring me back. The arrow button moves me to the other corner. Choose Listen below one of my answers to hear it, and Stop to end the reading.`);
+      return say(`Select ${COMPANION_CONFIG.name} to open the question panel. Select the character again, the close button, or press Escape to close it. Choose Listen below one of my answers to hear it, and Stop to end the reading.`);
     }
     if (/^(help|what can you do|what is this app|how do i use this app|how do i start)$/.test(plain) || /\b(website|project|app)\b/.test(query)) {
       return say('Our Place helps you explore local history and geography. Start with “Explore lessons”, filter by History or Geography, or search for a topic. Each sample lesson includes ideas, activities, and a quick quiz. We haven’t added a real town’s history yet.');

@@ -13,6 +13,8 @@ This Angular app helps elementary school students and teachers explore Đồng N
 
 ## UI and content
 
+- Keep Milo's floating dock to one character button. Do not add position, hide, or show controls; use the character, panel close button, or Escape to open/close the conversation.
+
 - Prefer code-native SVG/CSS illustrations for lightweight cartoon art. Use Figma or canvas when it materially helps; external design files are optional.
 - Animate buttons and reveal sections on scroll, honor `prefers-reduced-motion`, preserve visible content without animation support, and clean up observers/listeners/viewers.
 - Books must display actual PDF pages with smooth page turning, touch/keyboard controls, bounded rendering, and honest failure states. Panoramas must use a spherical 360° viewer, not a flat scrolling image.

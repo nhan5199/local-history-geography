@@ -5,21 +5,6 @@ import { LessonGuide } from '../../data-access/lesson-guide';
 import type { GuideMessage } from '../../models/guide-message';
 import { GuideVoice } from '../../voice/guide-voice';
 
-type Corner = 'left' | 'right';
-const PREFERENCES_KEY = 'ourplace.companion.preferences.v1';
-
-function readPreferences(): { hidden: boolean; side: Corner } {
-  try {
-    const value = JSON.parse(localStorage.getItem(PREFERENCES_KEY) ?? '{}');
-    return {
-      hidden: value?.hidden === true,
-      side: value?.side === 'left' || value?.side === 'right' ? value.side : COMPANION_CONFIG.defaultSide,
-    };
-  } catch {
-    return { hidden: false, side: COMPANION_CONFIG.defaultSide };
-  }
-}
-
 @Component({
   selector: 'app-project-companion',
   imports: [RouterLink],
@@ -32,9 +17,6 @@ export class ProjectCompanion implements OnDestroy {
   private readonly guide = inject(LessonGuide);
   private readonly router = inject(Router);
   private readonly injector = inject(Injector);
-  private readonly preferences = readPreferences();
-  readonly hidden = signal(this.preferences.hidden);
-  readonly side = signal<Corner>(this.preferences.side);
   readonly open = signal(false);
   readonly draft = signal('');
   readonly busy = signal(false);
@@ -45,7 +27,6 @@ export class ProjectCompanion implements OnDestroy {
   private readonly questionInput = viewChild<ElementRef<HTMLInputElement>>('questionInput');
   private readonly messageList = viewChild<ElementRef<HTMLOListElement>>('messageList');
   private readonly launcher = viewChild<ElementRef<HTMLButtonElement>>('launcher');
-  private readonly restoreButton = viewChild<ElementRef<HTMLButtonElement>>('restoreButton');
   private nextId = 1;
   private requestVersion = 0;
 
@@ -63,24 +44,6 @@ export class ProjectCompanion implements OnDestroy {
     this.open.set(false);
     this.voice.stop();
     if (restoreFocus) afterNextRender(() => this.launcher()?.nativeElement.focus(), { injector: this.injector });
-  }
-
-  hide(): void {
-    this.closePanel(false);
-    this.hidden.set(true);
-    this.savePreferences();
-    afterNextRender(() => this.restoreButton()?.nativeElement.focus(), { injector: this.injector });
-  }
-
-  show(): void {
-    this.hidden.set(false);
-    this.savePreferences();
-    afterNextRender(() => this.launcher()?.nativeElement.focus(), { injector: this.injector });
-  }
-
-  move(): void {
-    this.side.update(side => side === 'right' ? 'left' : 'right');
-    this.savePreferences();
   }
 
   setDraft(event: Event): void {
@@ -150,11 +113,6 @@ export class ProjectCompanion implements OnDestroy {
       const element = this.messageList()?.nativeElement;
       if (element) element.scrollTop = element.scrollHeight;
     }, { injector: this.injector });
-  }
-
-  private savePreferences(): void {
-    try { localStorage.setItem(PREFERENCES_KEY, JSON.stringify({ hidden: this.hidden(), side: this.side() })); }
-    catch { /* The companion still works when browser storage is unavailable. */ }
   }
 
   ngOnDestroy(): void {

@@ -1,8 +1,8 @@
 # Milo, the learning companion
 
 Milo is a floating explorer owl shown throughout the app. Select the character to
-open the question panel. Hide leaves a small Show Milo button in the same corner;
-the arrow button switches between the bottom-left and bottom-right corners.
+open the question panel. The character is the only dock control; select it again,
+use the panel close button, or press Escape to close the conversation.
 
 ## What works now
 
@@ -11,14 +11,14 @@ the arrow button switches between the bottom-left and bottom-right corners.
 - App guidance for navigation, quizzes, and the companion's controls.
 - Links back to the lesson used for an answer.
 - Optional Listen/Stop buttons using browser speech synthesis. No microphone input.
-- Position and visibility preferences stored locally, with a fallback if storage is blocked.
+- Fixed corner configured in code; no position or hide/show buttons or saved preferences.
 - Conversation held only in memory, capped at 20 messages, and reset on refresh.
 
 This is a passage-retrieval guide, not generative AI. It does not invent facts about
 real places, access a model provider, or query the Firebase database. It cannot answer
 everything; unrelated questions receive a helpful explanation of its scope.
 
-Read-aloud starts only when the user selects Listen. Hiding or closing the panel
+Read-aloud starts only when the user selects Listen. Closing the panel
 stops speech. Voices and availability depend on the browser and operating system;
 voice rendering can use their speech services. The application does not save chat
 messages or send questions to Firebase or an AI provider.
