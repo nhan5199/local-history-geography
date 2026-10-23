@@ -114,145 +114,19 @@
   </symbol>
 </svg>
 
+@if (!isCatalog) {
 <section class="hero" aria-labelledby="home-heading">
   <div class="container hero-inner">
     <div class="hero-copy" data-reveal>
       <span class="eyebrow"><span aria-hidden="true">✦</span> CÙNG KHÁM PHÁ ĐỒNG NAI</span>
-      <h1 id="home-heading">Mỗi vùng đất<br /><span>một câu chuyện hay!</span></h1>
-      <p>
-        Đồng Nai có dòng sông, những con đường và bao điều thú vị đang chờ em khám phá. Mình bắt đầu
-        chuyến phiêu lưu nhé!
-      </p>
+      <h1 id="home-heading">Ba lô sẵn sàng,<br /><span>khám phá thôi!</span></h1>
       <div class="hero-actions">
-        <a class="primary-cta" href="#lessons">Khám phá ngay <span aria-hidden="true">↗</span></a>
+        <a class="primary-cta" routerLink="/lessons">Khám phá bài học <span aria-hidden="true">↗</span></a>
         <a class="text-cta" routerLink="/map">Xem bản đồ <span aria-hidden="true">→</span></a>
       </div>
-      <div class="hero-note"><span aria-hidden="true">★</span> Học mà chơi, chơi mà học</div>
     </div>
     <div class="hero-art" data-reveal>
-      <svg
-        viewBox="0 0 620 490"
-        role="img"
-        aria-labelledby="hero-art-title"
-        xmlns="http://www.w3.org/2000/svg"
-      >
-        <title id="hero-art-title">
-          Hai bạn nhỏ khám phá dòng sông, cây xanh và di tích trên bản đồ Đồng Nai
-        </title>
-        <ellipse cx="320" cy="452" rx="272" ry="28" fill="#d49c6190" />
-        <path
-          d="M49 158Q95 40 265 42q181-27 293 100l25 214q-128 86-323 80Q91 430 35 311Z"
-          fill="#fbe4a4"
-          stroke="#263f36"
-          stroke-width="6"
-        />
-        <path
-          d="M59 287q80-78 180-23t173-21 159-31v143q-116 86-311 80Q97 430 42 309Z"
-          fill="#9acb91"
-        />
-        <path
-          d="M32 337q120-80 217-9t169 12q75-58 155-4v39q-128 71-310 62Q108 429 32 337Z"
-          fill="#77b9aa"
-        />
-        <path
-          d="M79 360q88-57 166-13t172 2q70-40 130-27"
-          fill="none"
-          stroke="#d5f3db"
-          stroke-width="6"
-          stroke-linecap="round"
-          stroke-dasharray="12 18"
-        />
-        <path
-          d="M75 216q68-45 139 0t140-1 161-5"
-          fill="none"
-          stroke="#fff7db"
-          stroke-width="20"
-          stroke-linecap="round"
-        />
-        <path
-          d="M75 216q68-45 139 0t140-1 161-5"
-          fill="none"
-          stroke="#cd9f71"
-          stroke-width="3"
-          stroke-dasharray="7 15"
-        />
-        <circle cx="458" cy="98" r="38" fill="#ffd46a" stroke="#263f36" stroke-width="5" />
-        <path
-          d="m458 38-1-15m-40 26-11-10m94 9 10-11"
-          stroke="#263f36"
-          stroke-width="5"
-          stroke-linecap="round"
-        />
-        <path
-          d="M119 190V111m-29 27q27-65 58-4m-44 26q17-42 44-18M495 257v-89m-35 24q33-85 72-1m-65 29q28-56 64-9"
-          fill="none"
-          stroke="#386b50"
-          stroke-width="11"
-          stroke-linecap="round"
-        />
-        <path d="M312 138h106v88H312Z" fill="#f8e2b0" stroke="#263f36" stroke-width="5" />
-        <path
-          d="m299 142 66-64 67 64Z"
-          fill="#e77f60"
-          stroke="#263f36"
-          stroke-width="5"
-          stroke-linejoin="round"
-        />
-        <path d="M359 226v-49h28v49" fill="#78bdc2" stroke="#263f36" stroke-width="4" />
-        <path
-          d="M328 163h17v20h-17zm66 0h17v20h-17z"
-          fill="#89c8c5"
-          stroke="#263f36"
-          stroke-width="3"
-        />
-        <path
-          d="M189 313q-5-49 30-59 42 1 39 54l-10 20-50-2Z"
-          fill="#f5b15c"
-          stroke="#263f36"
-          stroke-width="5"
-        />
-        <circle cx="225" cy="249" r="31" fill="#f6c6a2" stroke="#263f36" stroke-width="5" />
-        <path d="M197 246q-5-37 24-39 32-3 38 28-29-13-62 11Z" fill="#3b3431" />
-        <path d="M210 251h2m22-1h2" stroke="#263f36" stroke-width="5" stroke-linecap="round" />
-        <path
-          d="M218 263q7 6 15-1"
-          fill="none"
-          stroke="#ab6652"
-          stroke-width="3"
-          stroke-linecap="round"
-        />
-        <path
-          d="M205 326 192 388m46-62 26 61m-65-73-43 45m96-45 36 33"
-          stroke="#263f36"
-          stroke-width="11"
-          stroke-linecap="round"
-        />
-        <path d="M184 388h21m51-1h21" stroke="#523e37" stroke-width="12" stroke-linecap="round" />
-        <path
-          d="M346 340q-6-53 33-61 37 5 41 64l-18 30-42-2Z"
-          fill="#76b4c0"
-          stroke="#263f36"
-          stroke-width="5"
-        />
-        <circle cx="381" cy="274" r="31" fill="#eeb58b" stroke="#263f36" stroke-width="5" />
-        <path d="M352 267q-4-37 27-39 34 1 35 38-32-14-62 1Z" fill="#4c3835" />
-        <path d="M368 278h2m21-1h2" stroke="#263f36" stroke-width="5" stroke-linecap="round" />
-        <path
-          d="M375 289q7 6 14-1"
-          fill="none"
-          stroke="#a4624f"
-          stroke-width="3"
-          stroke-linecap="round"
-        />
-        <path
-          d="m363 369-21 46m59-45 30 44m-73-59-31-27m82 24 39-35"
-          stroke="#263f36"
-          stroke-width="11"
-          stroke-linecap="round"
-        />
-        <path d="M334 416h22m67-1h24" stroke="#523e37" stroke-width="12" stroke-linecap="round" />
-        <path d="m435 322 38-35-12-16-37 31Z" fill="#fff9e5" stroke="#263f36" stroke-width="4" />
-      </svg>
+      <app-explorer-scene />
     </div>
   </div>
 </section>
@@ -260,27 +134,22 @@
 <section class="adventure-section" aria-labelledby="adventure-heading">
   <div class="container">
     <div class="section-intro" data-reveal>
-      <span class="section-kicker">BẮT ĐẦU TỪ ĐÂU?</span>
       <h2 id="adventure-heading">Chọn một chuyến phiêu lưu <span>✦</span></h2>
-      <p>Mỗi góc nhỏ của Đồng Nai đều có điều mới để em tìm hiểu.</p>
     </div>
     <div class="adventure-grid">
       <a class="adventure-card adventure-map" routerLink="/map" data-reveal
-        ><span class="adventure-icon" aria-hidden="true">⌖</span
-        ><span class="adventure-text"
-          ><strong>Khám phá bản đồ</strong><small>Tìm những nơi quen mà lạ</small></span
+        ><span class="adventure-icon" aria-hidden="true"><svg viewBox="0 0 280 190" focusable="false"><use href="#lesson-art-mint" /></svg></span><span class="adventure-text"
+          ><strong>Khám phá bản đồ</strong></span
         ><span class="adventure-arrow" aria-hidden="true">↗</span></a
       >
       <a class="adventure-card adventure-books" routerLink="/books" data-reveal
-        ><span class="adventure-icon" aria-hidden="true">▤</span
-        ><span class="adventure-text"
-          ><strong>Đọc sách cùng em</strong><small>Lật mở bao câu chuyện hay</small></span
+        ><span class="adventure-icon" aria-hidden="true"><img src="/illustrations/books.svg" alt="" width="120" height="90" loading="lazy" /></span><span class="adventure-text"
+          ><strong>Đọc sách cùng em</strong></span
         ><span class="adventure-arrow" aria-hidden="true">↗</span></a
       >
       <a class="adventure-card adventure-panorama" routerLink="/panorama" data-reveal
-        ><span class="adventure-icon" aria-hidden="true">◉</span
-        ><span class="adventure-text"
-          ><strong>Ngắm nhìn 360°</strong><small>Ghé thăm từ mọi góc nhìn</small></span
+        ><span class="adventure-icon" aria-hidden="true"><img src="/illustrations/panorama.svg" alt="" width="120" height="90" loading="lazy" /></span><span class="adventure-text"
+          ><strong>Ngắm nhìn 360°</strong></span
         ><span class="adventure-arrow" aria-hidden="true">↗</span></a
       >
     </div>
@@ -290,42 +159,45 @@
 <section class="adventure-section" aria-labelledby="practice-heading">
   <div class="container">
     <div class="section-intro" data-reveal>
-      <span class="section-kicker">THỬ TÀI CÙNG BẠN</span>
       <h2 id="practice-heading">Học vui, nhớ lâu <span>★</span></h2>
-      <p>Ôn lại điều vừa học hoặc bước lên sân khấu kiến thức!</p>
     </div>
     <div class="adventure-grid">
       <a class="adventure-card adventure-books" routerLink="/questions" data-reveal>
-        <span class="adventure-icon" aria-hidden="true">?</span>
-        <span class="adventure-text"><strong>Câu hỏi ôn tập</strong><small>Tự thử sức với từng câu hỏi</small></span>
+        <span class="adventure-icon" aria-hidden="true"><img src="/illustrations/tests.svg" alt="" width="120" height="90" loading="lazy" /></span>
+        <span class="adventure-text"><strong>Câu hỏi ôn tập</strong></span>
         <span class="adventure-arrow" aria-hidden="true">↗</span>
       </a>
       <a class="adventure-card adventure-panorama" routerLink="/games" data-reveal>
-        <span class="adventure-icon" aria-hidden="true">★</span>
-        <span class="adventure-text"><strong>Sân chơi kiến thức</strong><small>Sáu kiểu chơi, bao điều thú vị</small></span>
+        <span class="adventure-icon" aria-hidden="true"><img src="/illustrations/games.svg" alt="" width="120" height="90" loading="lazy" /></span>
+        <span class="adventure-text"><strong>Sân chơi kiến thức</strong></span>
         <span class="adventure-arrow" aria-hidden="true">↗</span>
       </a>
       <a class="adventure-card adventure-map" routerLink="/teacher" data-reveal>
-        <span class="adventure-icon" aria-hidden="true">✎</span>
-        <span class="adventure-text"><strong>Góc giáo viên</strong><small>Tạo bộ câu hỏi từ tệp Excel</small></span>
+        <span class="adventure-icon" aria-hidden="true"><img src="/illustrations/books.svg" alt="" width="120" height="90" loading="lazy" /></span>
+        <span class="adventure-text"><strong>Góc giáo viên</strong></span>
         <span class="adventure-arrow" aria-hidden="true">↗</span>
       </a>
     </div>
   </div>
 </section>
 
+}
+
 <section class="lesson-section" id="lessons" aria-labelledby="lessons-heading">
   <div class="container">
     <div class="lesson-heading" data-reveal>
       <div>
-        <span class="section-kicker">BÀI HỌC THÚ VỊ</span>
-        <h2 id="lessons-heading">Hôm nay mình học gì? <span>✿</span></h2>
-        <p>Những bài học ngắn để em khám phá địa lý và lịch sử quanh mình.</p>
+        @if (isCatalog) {
+          <h1 id="lessons-heading" class="catalog-heading">Cùng khám phá bài học <span>✿</span></h1>
+        } @else {
+          <h2 id="lessons-heading">Hôm nay mình học gì? <span>✿</span></h2>
+          <a routerLink="/lessons">Xem tất cả bài học →</a>
+        }
       </div>
       <span class="sample-pill">✦ 4 bài học mẫu</span>
     </div>
     <div class="tools" data-reveal>
-      <div class="filters" aria-label="Filter lessons by topic">
+      <div class="filters" aria-label="Chọn chủ đề bài học">
         @for (category of categories; track category) {
           <button
             type="button"
@@ -334,12 +206,12 @@
             [attr.aria-pressed]="activeCategory() === category"
             (click)="activeCategory.set(category)"
           >
-            {{ category }}
+            {{ categoryLabels[category] }}
           </button>
         }
       </div>
       <label class="search-box"
-        ><span class="visually-hidden">Search lessons</span><span aria-hidden="true">⌕</span
+        ><span class="visually-hidden">Tìm bài học</span><span aria-hidden="true">⌕</span
         ><input
           type="search"
           placeholder="Tìm bài học..."
@@ -350,20 +222,19 @@
     <p class="result-count" aria-live="polite">{{ lessons().length }} bài học đang chờ em</p>
     <div class="lesson-grid">
       @for (lesson of lessons(); track lesson.id) {
-        <a class="lesson-card" [routerLink]="['/lessons', lesson.id]" data-reveal>
-          <div class="card-art" [class]="'card-art ' + lesson.color">
+        <a appCatalogCard class="lesson-card catalog-card" [routerLink]="['/lessons', lesson.id]" data-reveal>
+          <div [class]="'card-art catalog-card-art ' + lesson.color">
             <svg viewBox="0 0 280 190" aria-hidden="true" focusable="false">
               <use [attr.href]="'#lesson-art-' + lesson.color" />
             </svg>
           </div>
           <div class="card-body">
-            <span class="card-category">{{ lesson.category }}</span>
+            <span class="card-category">{{ categoryLabels[lesson.category] }}</span>
             <h3>{{ lesson.title }}</h3>
-            <p>{{ lesson.subtitle }}</p>
             <div class="card-meta">
-              <span>◷ {{ lesson.duration }} min</span><span>{{ lesson.level }}</span
-              ><span class="card-arrow" aria-hidden="true">↗</span>
+              <span>◷ {{ lesson.duration }} phút</span><span>{{ lesson.level }}</span>
             </div>
+            <span class="catalog-card-cta">Khám phá bài học <span class="catalog-card-arrow" aria-hidden="true">→</span></span>
           </div>
         </a>
       } @empty {
@@ -371,6 +242,7 @@
           <span aria-hidden="true">⌕</span>
           <h3>Chưa tìm thấy bài học</h3>
           <p>Thử từ khóa khác hoặc chọn một chủ đề nhé.</p>
+          <button class="filter-button" type="button" (click)="resetFilters()">Xem lại tất cả bài học ↻</button>
         </div>
       }
     </div>

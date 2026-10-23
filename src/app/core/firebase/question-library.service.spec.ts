@@ -3,6 +3,7 @@ import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { QuestionLibraryService, validateLearningQuestion, validateQuestionSet } from './question-library.service';
 import { RealtimeDatabaseService } from './realtime-database.service';
 import { TeacherAuthService } from './teacher-auth.service';
+import { PublicCatalogContext } from '../../shared/data-access/public-catalog-context';
 import type { LearningQuestion } from './question.models';
 
 const fill: LearningQuestion = {
@@ -14,6 +15,7 @@ describe('QuestionLibraryService', () => {
   const auth = { initialize: vi.fn(), user: vi.fn(), isTeacher: vi.fn() };
   function service(): QuestionLibraryService {
     const injector = createEnvironmentInjector([
+      PublicCatalogContext,
       { provide: RealtimeDatabaseService, useValue: database },
       { provide: TeacherAuthService, useValue: auth },
     ], Injector.NULL as EnvironmentInjector);

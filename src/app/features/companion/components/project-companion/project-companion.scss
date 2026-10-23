@@ -39,3 +39,18 @@ h2 { font: 700 1.5rem Georgia, serif; margin: .2rem 0 0; } h2 span { color: #bd6
 @media (max-width: 480px) { .character-button img { width: 80px; height: 90px; } .guide-panel { height: min(550px, calc(100dvh - 110px)); } }
 @media (max-height: 560px) { .suggestions, .guide-label, .scope-note, .panel-footer { display: none; } .panel-header { padding: .3rem .75rem; } h2 { font-size: 1.2rem; } .guide-panel { height: calc(100dvh - 95px); } .is-open .character-button img { display: none; } }
 @media (prefers-reduced-motion: reduce) { .character-button img { transition: none; } .character-button:hover img { transform: none; } }
+.guide-panel { border: 2px solid #416759; box-shadow: 5px 6px 0 #41675940, 0 14px 36px #203b3a22; }
+.panel-header { background: #ffdf83; }
+.source-link { padding: .55rem .7rem; border: 1px solid #b9ceba; border-radius: 12px; background: #fffdf5; text-decoration: none; }
+.send-button { min-width: 46px; font-size: 1.4rem; }
+.suggestions button, .listen-button { min-height: 44px; }
+.thinking span[aria-hidden] { display: inline-block; letter-spacing: .3em; }
+@keyframes milo-enter { from { opacity: 0; transform: translateY(8px) scale(.98); } to { opacity: 1; transform: none; } }
+@keyframes milo-think { 50% { transform: rotate(-5deg) translateY(-3px); } }
+@keyframes milo-talk { 50% { transform: translateY(-3px); } }
+@media (prefers-reduced-motion: no-preference) {
+  .guide-panel, .message { animation: milo-enter .18s ease-out; }
+  .is-thinking .character-button img { animation: milo-think .8s ease-in-out 3; }
+  .is-speaking .character-button img { animation: milo-talk .6s ease-in-out 4; }
+  .thinking span[aria-hidden] { animation: milo-talk .6s ease-in-out 4; }
+}

@@ -1,56 +1,56 @@
-<aside class="companion" [class.on-left]="character.defaultSide === 'left'" [class.is-open]="open()" aria-label="Learning companion">
+<aside class="companion" [class.on-left]="character.defaultSide === 'left'" [class.is-open]="open()" [class.is-thinking]="busy()" [class.is-speaking]="voice.speakingId() !== null" aria-label="Milo, bạn học cùng em">
     @if (open()) {
       <section id="milo-panel" class="guide-panel" role="dialog" aria-modal="false" aria-labelledby="milo-title">
         <header class="panel-header">
-          <div><span class="guide-label">YOUR EXPLORER FRIEND</span><h2 id="milo-title">Ask {{ character.name }} <span aria-hidden="true">✦</span></h2></div>
-          <button type="button" class="icon-button" (click)="closePanel()" aria-label="Close question panel" title="Close">×</button>
+          <div><span class="guide-label">BẠN KHÁM PHÁ</span><h2 id="milo-title">Hỏi {{ character.name }} <span aria-hidden="true">✦</span></h2></div>
+          <button type="button" class="icon-button" (click)="closePanel()" aria-label="Đóng trò chuyện" title="Đóng">×</button>
         </header>
-        <p class="scope-note">Answers from our sample lessons.</p>
-        <ol #messageList class="messages" aria-label="Conversation">
+        <p class="scope-note">Tìm trong bài học và nội dung của trang.</p>
+        <ol #messageList class="messages" aria-label="Cuộc trò chuyện">
           @for (message of messages(); track message.id) {
             <li class="message" [class.from-user]="message.role === 'user'">
-              <span class="message-author">{{ message.role === 'user' ? 'You' : character.name }}</span>
+              <span class="message-author">{{ message.role === 'user' ? 'Em' : character.name }}</span>
               <p>{{ message.text }}</p>
-              @for (source of message.sources; track source.lessonId) {
-                <a class="source-link" [routerLink]="['/lessons', source.lessonId]" (click)="closePanel()">Read: {{ source.title }} <span aria-hidden="true">↗</span></a>
+              @for (source of message.sources; track source.key) {
+                <a class="source-link" [routerLink]="source.url.split('#')[0]" [fragment]="source.url.split('#')[1]" (click)="closePanel()">Xem: {{ source.title }} <span aria-hidden="true">↗</span></a>
               }
               @if (message.role === 'guide' && voice.supported) {
-                <button type="button" class="listen-button" [attr.aria-label]="voice.speakingId() === message.id ? 'Stop reading this answer' : 'Listen to this answer'"
+                <button type="button" class="listen-button" [attr.aria-label]="voice.speakingId() === message.id ? 'Dừng đọc' : 'Nghe câu trả lời'"
                   [attr.aria-pressed]="voice.speakingId() === message.id" (click)="read(message)">
-                  <span aria-hidden="true">{{ voice.speakingId() === message.id ? '■' : '▷' }}</span> {{ voice.speakingId() === message.id ? 'Stop' : 'Listen' }}
+                  <span aria-hidden="true">{{ voice.speakingId() === message.id ? '■' : '▷' }}</span> {{ voice.speakingId() === message.id ? 'Dừng' : 'Nghe' }}
                 </button>
               }
             </li>
           }
-          @if (busy()) { <li class="thinking">Looking through the lessons…</li> }
+          @if (busy()) { <li class="thinking"><span aria-hidden="true">● ● ●</span><span class="visually-hidden">Milo đang tìm…</span></li> }
         </ol>
         <p class="visually-hidden" role="status" aria-live="polite" aria-atomic="true">{{ announcement() }}</p>
-        @if (messages().length === 1) {
-          <div class="suggestions" aria-label="Questions to try">
-            @for (prompt of prompts; track prompt) { <button type="button" (click)="ask(prompt)" [disabled]="busy()">{{ prompt }}</button> }
+        @if (!busy()) {
+          <div class="suggestions" aria-label="Gợi ý câu hỏi">
+            @for (prompt of suggestions(); track prompt) { <button type="button" (click)="ask(prompt)" [disabled]="busy()">{{ prompt }}</button> }
           </div>
         }
-        @if (!voice.supported) { <p class="voice-note">Read-aloud isn’t available in this browser.</p> }
+        @if (!voice.supported) { <p class="voice-note">Trình duyệt này chưa hỗ trợ giọng đọc.</p> }
         @if (voice.error(); as error) { <p class="voice-note" role="status">{{ error }}</p> }
         <form class="question-form" (submit)="submit($event)">
-          <label for="milo-question" class="visually-hidden">Your question for {{ character.name }}</label>
-          <input #questionInput id="milo-question" name="question" type="text" maxlength="400" autocomplete="off" placeholder="Ask a question…"
+          <label for="milo-question" class="visually-hidden">Câu hỏi dành cho {{ character.name }}</label>
+          <input #questionInput id="milo-question" name="question" type="text" maxlength="400" autocomplete="off" placeholder="Em muốn biết điều gì?"
             [value]="draft()" (input)="setDraft($event)" />
-          <button type="submit" class="send-button" [disabled]="busy() || !draft().trim()" aria-label="Send question">Send <span aria-hidden="true">↗</span></button>
+          <button type="submit" class="send-button" [disabled]="busy() || !draft().trim()" aria-label="Gửi câu hỏi"><span aria-hidden="true">↗</span></button>
         </form>
-        <div class="panel-footer"><span>Chat stays in this visit.</span><button type="button" (click)="clearConversation()">New chat</button></div>
+        <div class="panel-footer"><span>Chỉ nhớ trong lần mở trang này.</span><button type="button" (click)="clearConversation()">Hỏi lại từ đầu</button></div>
       </section>
     }
     <div class="character-dock">
       <button #launcher type="button" class="character-button" (click)="togglePanel()" aria-controls="milo-panel" aria-haspopup="dialog"
-        [attr.aria-expanded]="open()" [attr.aria-label]="open() ? 'Close ' + character.name + ' question panel' : 'Ask ' + character.name + ' a question'">
+        [attr.aria-expanded]="open()" [attr.aria-label]="open() ? 'Đóng trò chuyện với ' + character.name : 'Hỏi ' + character.name">
         @if (imageFailed()) { <span class="avatar-fallback" aria-hidden="true">✦</span> }
         @else {
           <picture><source media="(prefers-reduced-motion: reduce)" [srcset]="character.stillImageSrc" />
             <img [src]="character.imageSrc" alt="" width="104" height="117" (error)="imageFailed.set(true)" />
           </picture>
         }
-        <span class="character-caption">{{ open() ? 'Here to help!' : 'Ask ' + character.name }} <span aria-hidden="true">✦</span></span>
+        <span class="character-caption">{{ open() ? 'Milo đây!' : 'Hỏi ' + character.name }} <span aria-hidden="true">✦</span></span>
       </button>
     </div>
 </aside>

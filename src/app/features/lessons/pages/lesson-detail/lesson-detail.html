@@ -1,7 +1,7 @@
 @if (lesson(); as lesson) {
   <div class="lesson-page">
     <div class="container">
-      <nav class="crumbs" aria-label="Breadcrumb"><a routerLink="/">All lessons</a><span aria-hidden="true">›</span><span>{{ lesson.title }}</span></nav>
+      <nav class="crumbs" aria-label="Đường dẫn"><a routerLink="/lessons">Bài học</a><span aria-hidden="true">›</span><span>{{ lesson.title }}</span></nav>
       <div class="lesson-hero row g-4 align-items-center">
         <div class="col-lg-8">
           <span class="category-label">{{ lesson.category }} · SAMPLE LESSON</span>
@@ -20,7 +20,7 @@
         <div class="col-lg-8">
           <div class="reading-heading"><span class="box-kicker">LET'S EXPLORE</span><h2>The story starts here</h2></div>
           @for (section of lesson.sections; track section.heading; let sectionIndex = $index) {
-            <article class="reading-card"><span class="section-number">0{{ sectionIndex + 1 }}</span><h3>{{ section.heading }}</h3><p>{{ section.body }}</p><div class="try-box"><span aria-hidden="true">✎</span><div><strong>Try it yourself</strong><p>{{ section.tryIt }}</p></div></div></article>
+            <article class="reading-card" [id]="'section-' + sectionIndex"><span class="section-number">0{{ sectionIndex + 1 }}</span><h3>{{ section.heading }}</h3><p>{{ section.bodyVi ?? section.body }}</p><div class="try-box"><span aria-hidden="true">✎</span><div><strong>Try it yourself</strong><p>{{ section.tryItVi ?? section.tryIt }}</p></div></div></article>
           }
 
           <section class="quiz-box" aria-labelledby="quiz-title">
@@ -46,11 +46,11 @@
               @if (!allAnswered()) { <p class="answer-hint">Answer both questions to check your work.</p> }
             }
           </section>
-          <a class="back-link" routerLink="/">← Back to all lessons</a>
+          <a class="back-link" routerLink="/lessons">← Back to all lessons</a>
         </div>
       </div>
     </div>
   </div>
 } @else {
-  <div class="container missing-lesson"><span aria-hidden="true">⌕</span><h1>We couldn't find that lesson.</h1><p>It may have moved. Head back and choose another path to explore.</p><a routerLink="/">Browse lessons →</a></div>
+  <div class="container missing-lesson"><span aria-hidden="true">⌕</span><h1>We couldn't find that lesson.</h1><p>It may have moved. Head back and choose another path to explore.</p><a routerLink="/lessons">Browse lessons →</a></div>
 }

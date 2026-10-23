@@ -1,6 +1,7 @@
 import { inject, Injectable } from '@angular/core';
 import { RealtimeDatabaseService } from './realtime-database.service';
 import { TeacherAuthService } from './teacher-auth.service';
+import { PublicCatalogContext } from '../../shared/data-access/public-catalog-context';
 import type { BankQuestion, LearningQuestion, QuestionSet, QuestionType } from './question.models';
 
 export type QuestionMode = QuestionSet['mode'];
@@ -98,6 +99,7 @@ export function validateBankQuestion(id: string, value: unknown, mode: QuestionM
 
 @Injectable({ providedIn: 'root' })
 export class QuestionLibraryService {
+  private readonly publicContext = inject(PublicCatalogContext);
   private readonly database = inject(RealtimeDatabaseService);
   private readonly auth = inject(TeacherAuthService);
   private readonly catalogs = new Map<QuestionMode, Promise<Catalog>>();
@@ -107,7 +109,12 @@ export class QuestionLibraryService {
   /** At most one public, indexed, 30-record read per mode until this service publishes. */
   list(mode: QuestionMode): Promise<QuestionSet[]> {
     if (mode !== 'questions' && mode !== 'game') return Promise.reject(new Error('Chế độ câu hỏi không hợp lệ.'));
-    return this.getCatalog(mode).then(catalog => catalog.sets);
+    return this.getCatalog(mode).then(catalog => {
+      this.publicContext.replace(mode === 'game' ? 'games' : 'questions', catalog.sets.map(set => ({
+        id: set.id, title: set.title, description: `${set.questions.length} câu hỏi`,
+      })));
+      return catalog.sets;
+    });
   }
 
   /** Teacher-only, indexed 25-record pages. Continue until every bank entry is read. */

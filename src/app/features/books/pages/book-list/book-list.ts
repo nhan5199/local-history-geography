@@ -1,10 +1,11 @@
+import { CatalogCard } from '../../../../shared/components/catalog-card/catalog-card';
 import { Component, inject, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { MediaLibraryService, type MediaAsset } from '../../../../core/firebase/media-library.service';
 
 @Component({
   selector: 'app-book-list',
-  imports: [RouterLink],
+  imports: [CatalogCard, RouterLink],
   templateUrl: './book-list.html',
   styleUrl: './book-list.scss',
 })

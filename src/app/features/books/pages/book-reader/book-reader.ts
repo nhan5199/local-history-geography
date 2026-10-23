@@ -4,7 +4,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { GlobalWorkerOptions, getDocument, type PDFDocumentLoadingTask, type PDFDocumentProxy, type RenderTask } from 'pdfjs-dist';
 import { PageFlip } from 'page-flip';
 import { MediaLibraryService, type MediaAsset } from '../../../../core/firebase/media-library.service';
-import { readPdfBytes } from '../../read-pdf-bytes';
+import { readPdfBytes } from '../../utils/read-pdf-bytes';
 
 // The copy in public/demo is version-matched to the pinned pdfjs-dist package.
 GlobalWorkerOptions.workerSrc = '/demo/pdf.worker.min.mjs';

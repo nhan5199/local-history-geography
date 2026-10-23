@@ -16,9 +16,9 @@ export class GuideVoice implements OnDestroy {
     try {
       const speech = new SpeechSynthesisUtterance(text);
       const voices = window.speechSynthesis.getVoices();
-      const english = voices.filter(voice => voice.lang.toLowerCase().startsWith('en'));
-      speech.voice = english.find(voice => voice.localService) ?? english[0] ?? null;
-      speech.lang = speech.voice?.lang ?? 'en-US';
+      const vietnamese = voices.filter(voice => voice.lang.toLowerCase().startsWith('vi'));
+      speech.voice = vietnamese.find(voice => voice.localService) ?? vietnamese[0] ?? null;
+      speech.lang = speech.voice?.lang ?? 'vi-VN';
       speech.rate = 0.9;
       this.current = speech;
       this.speakingId.set(messageId);
@@ -32,14 +32,14 @@ export class GuideVoice implements OnDestroy {
         this.current = undefined;
         this.speakingId.set(null);
         if (event.error !== 'canceled' && event.error !== 'interrupted') {
-          this.error.set('This voice couldn’t play. You can still read the answer.');
+          this.error.set('Chưa phát được giọng đọc. Em vẫn có thể đọc câu trả lời nhé.');
         }
       };
       window.speechSynthesis.speak(speech);
     } catch {
       this.current = undefined;
       this.speakingId.set(null);
-      this.error.set('Read-aloud isn’t available right now. You can still read the answer.');
+      this.error.set('Chưa có giọng đọc lúc này. Em vẫn có thể đọc câu trả lời nhé.');
     }
   }
 

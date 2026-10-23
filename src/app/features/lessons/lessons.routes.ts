@@ -8,6 +8,12 @@ export const LESSON_ROUTES: Routes = [
     title: 'Đồng Nai ơi! · Cùng khám phá quê hương',
   },
   {
+    path: 'lessons',
+    loadComponent: () => import('./pages/lesson-list/lesson-list').then(module => module.LessonList),
+    data: { catalog: true },
+    title: 'Bài học · Đồng Nai ơi!',
+  },
+  {
     path: 'lessons/:id',
     loadComponent: () => import('./pages/lesson-detail/lesson-detail').then(module => module.LessonDetail),
     title: 'Lesson · Our Place',

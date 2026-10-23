@@ -1,0 +1,37 @@
+:host { display: block; }
+.explorer { border: 3px solid #355f49; border-radius: 34px; background: #fffdf5; box-shadow: 7px 9px 0 #355f4926; overflow: hidden; }
+.scene { position: relative; }
+.landscape { display: block; width: 100%; height: auto; }
+.scene-label { position: absolute; z-index: 1; top: 12px; left: 16px; padding: 6px 12px; border-radius: 30px; background: #fffdf5; color: #355f49; font-size: .65rem; font-weight: 900; letter-spacing: .04em; }
+.scene-caption { position: absolute; bottom: 8px; left: 0; right: 0; text-align: center; font-size: .62rem; color: #35513c; }
+.discovery-pin { position: absolute; display: flex; align-items: center; gap: 6px; padding: 8px 12px; min-height: 44px; border: 2px solid #355f49; border-radius: 16px; background: #fffdf5; color: #294b39; box-shadow: 0 4px 0 #355f49; font-size: .85rem; font-weight: 900; transition: transform .2s, box-shadow .2s, background .2s; }
+.discovery-pin span { font-size: 1.25rem; line-height: 1; }
+.pin-river { top: 73%; left: 24%; }
+.pin-forest { top: 47%; left: 7%; }
+.pin-village { top: 50%; right: 9%; }
+.discovery-pin.discovered { background: #ffedaa; }
+.discovery-pin[aria-pressed=true] { background: #355f49; color: white; }
+.discovery-pin:focus-visible, .discovery-link:focus-visible { outline: 3px solid #265c9b; outline-offset: 5px; }
+.discovery-pin:active { transform: translateY(4px); box-shadow: none; }
+.discovery-note { padding: 16px 22px; min-height: 236px; border-top: 3px solid #355f49; background: #fffdf5; }
+.discovery-status strong { font-size: 1.12rem; color: #294b39; }
+.discovery-status p { font-size: .9rem; line-height: 1.6; margin: 8px 0; color: #465f51; }
+.discovery-progress { display: block; font-size: .75rem; font-weight: 800; color: #735429; }
+.discovery-stamps { display: flex; gap: 8px; margin: 6px 0; }
+.discovery-stamps span { display: grid; place-items: center; width: 28px; height: 28px; border: 2px dashed #b8c9b3; border-radius: 50%; color: #c7d4bf; }
+.discovery-stamps .earned { border-style: solid; border-color: #b8802c; color: #9a6014; background: #ffe6a1; }
+.discovery-link { display: inline-flex; gap: 20px; align-items: center; min-height: 44px; margin-top: 8px; font-size: .85rem; color: #245e49; font-weight: 900; text-underline-offset: 4px; }
+@keyframes scene-cloud { from { transform: translateX(-6px); } to { transform: translateX(6px); } }
+@keyframes scene-blink { 0%, 80%, 100% { scale: 1 1; } 90% { scale: 1 .12; } }
+@keyframes scene-wave { from { transform: translateY(0); } to { transform: translateY(4px); } }
+@keyframes stamp-pop { 50% { transform: scale(1.25) rotate(12deg); } }
+@media (prefers-reduced-motion: no-preference) {
+  .discovery-stamps .earned { animation: stamp-pop .32s ease-out; }
+  .cloud { animation: scene-cloud 2s ease-in-out 2 alternate; }
+  .owl-eyes { transform-box: fill-box; transform-origin: center; animation: scene-blink 2s 2; }
+  .scene:focus-within .river-ripples { animation: scene-wave .7s ease-in-out 2 alternate; }
+  .scene:focus-within .sun { transform-box: fill-box; transform-origin: center; animation: scene-cloud .7s ease-in-out 2 alternate; }
+}
+@media (hover: hover) and (pointer: fine) { .discovery-pin:hover { transform: translateY(-3px) rotate(-2deg); } }
+@media (max-width: 440px) { .discovery-pin { font-size: .73rem; padding: 6px 8px; gap: 4px; } .scene-label { font-size: .55rem; top: 8px; left: 8px; } .discovery-note { padding: 16px; min-height: 264px; } }
+@media (prefers-reduced-motion: reduce) { .discovery-pin { transition: none; } .discovery-pin:is(:hover, :active) { transform: none; } }

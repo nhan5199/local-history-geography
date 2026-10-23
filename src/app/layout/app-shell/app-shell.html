@@ -1,4 +1,5 @@
 <div class="site-shell">
+  <a class="skip-link" href="#main-content">Đến nội dung chính</a>
   <header class="site-header">
     <div class="container header-inner">
       <a class="brand" routerLink="/" aria-label="Đồng Nai ơi, trang chủ"
@@ -6,19 +7,20 @@
       >
       <nav class="main-nav" aria-label="Điều hướng chính">
         <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }"
-          >Trang chủ</a
+          ><span class="nav-icon" aria-hidden="true">⌂</span>Trang chủ</a
         >
-        <a routerLink="/map" routerLinkActive="active">Bản đồ</a>
-        <a routerLink="/books" routerLinkActive="active">Tủ sách</a>
-        <a routerLink="/panorama" routerLinkActive="active">Góc 360°</a>
-        <a routerLink="/questions" routerLinkActive="active">Câu hỏi</a>
-        <a routerLink="/games" routerLinkActive="active">Sân chơi</a>
-        <a routerLink="/teacher" routerLinkActive="active">Giáo viên</a>
+        <a routerLink="/lessons" routerLinkActive="active" ariaCurrentWhenActive="page"><span class="nav-icon" aria-hidden="true">▤</span>Bài học</a>
+        <a routerLink="/map" routerLinkActive="active"><span class="nav-icon" aria-hidden="true">⌖</span>Bản đồ</a>
+        <a routerLink="/books" routerLinkActive="active"><span class="nav-icon" aria-hidden="true">▥</span>Tủ sách</a>
+        <a routerLink="/panorama" routerLinkActive="active"><span class="nav-icon" aria-hidden="true">◉</span>Góc 360°</a>
+        <a routerLink="/questions" routerLinkActive="active"><span class="nav-icon" aria-hidden="true">?</span>Câu hỏi</a>
+        <a routerLink="/games" routerLinkActive="active"><span class="nav-icon" aria-hidden="true">★</span>Sân chơi</a>
+        <a routerLink="/teacher" routerLinkActive="active"><span class="nav-icon" aria-hidden="true">✎</span>Giáo viên</a>
       </nav>
     </div>
   </header>
 
-  <main id="main-content"><router-outlet /></main>
+  <main id="main-content" tabindex="-1"><router-outlet /></main>
 
   <footer class="site-footer">
     <div class="container footer-inner">

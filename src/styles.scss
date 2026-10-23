@@ -1,9 +1,9 @@
 @import "bootstrap/dist/css/bootstrap.min.css";
 @import "pannellum/build/pannellum.css";
 
-:root { color-scheme: light; }
+:root { color-scheme: light; --storybook-ink: #294e42; --storybook-paper: #fffcf2; --storybook-sun: #ffda75; --storybook-sky: #caebef; }
 html { scroll-behavior: smooth; }
-body { margin: 0; color: #203b3a; background: #f8f7f1; font-family: 'Trebuchet MS', Arial, sans-serif; }
+body { margin: 0; color: var(--storybook-ink); background: var(--storybook-paper); font-family: 'Trebuchet MS', Arial, sans-serif; }
 button, input { font: inherit; }
 button:focus-visible, a:focus-visible, input:focus-visible { outline: 3px solid #e69062; outline-offset: 3px; }
 
@@ -12,5 +12,6 @@ app-shell.pointer-input input:focus {
   outline: none !important;
   box-shadow: none !important;
 }
+app-shell.pointer-input .search-box:focus-within { outline: none; box-shadow: none; }
 ::selection { background: #f6d8b6; }
 @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }

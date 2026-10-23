@@ -1,4 +1,5 @@
-import { Component, ElementRef, HostListener, OnDestroy, OnInit, ViewChild, computed, signal } from '@angular/core';
+import { Component, ElementRef, HostListener, OnDestroy, OnInit, ViewChild, computed, signal, inject } from '@angular/core';
+import { PublicCatalogContext } from '../../../../shared/data-access/public-catalog-context';
 import { AreaPreview, PreviewAnchor, previewPlacement } from '../../components/area-preview/area-preview';
 import { MapMenu } from '../../components/map-menu/map-menu';
 import type { MapRegion } from '../../models/map-region';
@@ -56,6 +57,7 @@ function isMapData(value: unknown): value is MapData {
   styleUrl: './map-page.scss',
 })
 export class MapPage implements OnInit, OnDestroy {
+  private readonly publicContext = inject(PublicCatalogContext);
   @ViewChild('mapSvg') private mapSvg?: ElementRef<SVGSVGElement>;
   @ViewChild('mapStage') private mapStage?: ElementRef<HTMLDivElement>;
   @ViewChild(MapMenu) private menu?: MapMenu;
@@ -133,6 +135,7 @@ export class MapPage implements OnInit, OnDestroy {
       if (!isMapData(data)) throw new Error('Map data has an unexpected format');
       if (this.request !== request) return;
       this.map.set(data);
+      this.publicContext.replace('map', data.regions.map(region => ({ id: region.id, title: `${region.type} ${region.name}`, description: 'Tìm tên địa phương này trong ô tìm kiếm trên bản đồ để xem ranh giới tham khảo.' })));
       this.loadState.set('ready');
     } catch (error) {
       if (request.signal.aborted || this.request !== request) return;

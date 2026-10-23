@@ -4,6 +4,10 @@ An account-free Angular 21 frontend for elementary learners, styled with Bootstr
 The bundled lessons are examples, not a verified local curriculum. Replace them with
 content for your town or province before using the app in class.
 
+The [feature roadmap and work checklist](docs/roadmap.md) tracks requested
+improvements, acceptance criteria, suggested educational features, and verified
+completed work.
+
 ## Run locally
 
 Requires Node.js 22.12+ within the 22.x release line (or another Node version supported

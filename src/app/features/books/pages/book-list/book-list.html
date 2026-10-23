@@ -18,13 +18,15 @@
   } @else {
     <div class="books-grid">
       @for (book of books(); track book.id) {
-        <a class="book-card" [routerLink]="['/books', book.id]">
-          <div class="book-art" aria-hidden="true"><span>✦</span><strong>PDF</strong></div>
-          <div class="book-copy">
+        <a appCatalogCard class="book-card catalog-card" [routerLink]="['/books', book.id]">
+          <div class="catalog-card-art" aria-hidden="true">
+            <img src="/illustrations/books.svg" alt="" width="480" height="300" loading="lazy" decoding="async" />
+          </div>
+          <div class="book-copy catalog-card-content">
             <span class="book-kind">SÁCH TƯƠNG TÁC</span>
             <h2>{{ book.title }}</h2>
             <p>{{ book.description }}</p>
-            <span class="book-open">Mở sách <span aria-hidden="true">↗</span></span>
+            <span class="catalog-card-cta">Mở sách PDF <span class="catalog-card-arrow" aria-hidden="true">→</span></span>
           </div>
         </a>
       }

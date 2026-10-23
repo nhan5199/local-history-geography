@@ -1,13 +1,16 @@
+import { ExplorerScene } from '../../components/explorer-scene/explorer-scene';
+import { CatalogCard } from '../../../../shared/components/catalog-card/catalog-card';
 import {
   AfterViewInit,
   Component,
+  ChangeDetectionStrategy,
   ElementRef,
   OnDestroy,
   computed,
   inject,
   signal,
 } from '@angular/core';
-import { RouterLink } from '@angular/router';
+import { ActivatedRoute, RouterLink } from '@angular/router';
 import type { LessonCategory } from '../../models/lesson';
 import { SAMPLE_LESSONS } from '../../data/sample-lessons';
 
@@ -15,13 +18,17 @@ type CategoryFilter = 'All lessons' | LessonCategory;
 
 @Component({
   selector: 'app-lesson-list',
-  imports: [RouterLink],
+  imports: [CatalogCard, RouterLink, ExplorerScene],
   templateUrl: './lesson-list.html',
   styleUrl: './lesson-list.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class LessonList implements AfterViewInit, OnDestroy {
+  readonly isCatalog = inject(ActivatedRoute).snapshot.data['catalog'] === true;
   private readonly element = inject(ElementRef<HTMLElement>);
   private revealObserver?: IntersectionObserver;
+  readonly categoryLabels: Record<CategoryFilter, string> = { 'All lessons': 'Tất cả', History: 'Lịch sử', Geography: 'Địa lý' };
+  resetFilters(): void { this.activeCategory.set('All lessons'); this.searchTerm.set(''); }
   readonly categories: CategoryFilter[] = ['All lessons', 'History', 'Geography'];
   readonly activeCategory = signal<CategoryFilter>('All lessons');
   readonly searchTerm = signal('');

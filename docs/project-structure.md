@@ -6,58 +6,65 @@ grouping related files and organizing application code by feature areas.
 
 ```text
 local-history-geography/
-|-- docs/
-|   `-- project-structure.md
-|-- firebase/
-|   |-- database.rules.json
-|   `-- storage.rules
+|-- docs/                         # Feature notes and roadmap.md
+|-- firebase/                     # Database and Storage rules
 |-- public/
-|   `-- favicon.svg
+|   |-- demo/                     # Labeled demo media and PDF worker
+|   |-- illustrations/            # Original catalog SVG artwork
+|   |-- maps/                     # Map geometry
+|   `-- mascot/                   # Milo artwork
+|-- scripts/                      # Publishing, provisioning and map tools
 |-- src/
 |   |-- app/
-|   |   |-- core/
-|   |   |   `-- firebase/
-|   |   |       |-- firebase.config.ts
-|   |   |       |-- firebase.service.ts
-|   |   |       |-- firebase-emulators.ts
-|   |   |       |-- realtime-database.service.ts
-|   |   |       `-- firebase-storage.service.ts
-|   |   |-- layout/
-|   |   |   `-- app-shell/
-|   |   |       |-- app-shell.ts
-|   |   |       |-- app-shell.html
-|   |   |       `-- app-shell.scss
+|   |   |-- app-root/
+|   |   |-- core/firebase/        # Shared SDK, auth, catalogs and Excel services
+|   |   |-- layout/app-shell/
+|   |   |-- shared/components/catalog-card/
+|   |   |   |-- catalog-card.ts
+|   |   |   `-- catalog-card.scss
 |   |   |-- features/
+|   |   |   |-- books/
+|   |   |   |   |-- pages/
+|   |   |   |   |   |-- book-list/
+|   |   |   |   |   `-- book-reader/
+|   |   |   |   |-- types/page-flip.d.ts
+|   |   |   |   |-- utils/         # PDF byte reader and its tests
+|   |   |   |   `-- books.routes.ts
+|   |   |   |-- companion/
+|   |   |   |   |-- components/project-companion/
+|   |   |   |   |-- config/companion.config.ts
+|   |   |   |   |-- data-access/lesson-guide.ts
+|   |   |   |   |-- models/guide-message.ts
+|   |   |   |   `-- voice/guide-voice.ts
+|   |   |   |-- games/
+|   |   |   |   |-- pages/games-page/
+|   |   |   |   `-- utils/         # Game scoring and its tests
+|   |   |   |-- lessons/
+|   |   |   |   |-- components/
+|   |   |   |   |   |-- explorer-scene/ # Interactive cartoon landscape
+|   |   |   |   |   `-- map-illustration/
+|   |   |   |   |-- data/sample-lessons.ts
+|   |   |   |   |-- data-access/lesson-repository.ts
+|   |   |   |   |-- models/lesson.ts
+|   |   |   |   |-- pages/
+|   |   |   |   |   |-- lesson-list/
+|   |   |   |   |   `-- lesson-detail/
+|   |   |   |   `-- lessons.routes.ts
 |   |   |   |-- map/
 |   |   |   |   |-- components/
 |   |   |   |   |   |-- area-preview/
 |   |   |   |   |   `-- map-menu/
 |   |   |   |   |-- models/map-region.ts
 |   |   |   |   `-- pages/map-page/
-|   |   |   |       |-- map-page.ts
-|   |   |   |       |-- map-page.html
-|   |   |   |       |-- map-page.scss
-|   |   |   |       `-- map-page.spec.ts
-|   |   |   |-- companion/
-|   |   |   |   |-- companion.config.ts
-|   |   |   |   |-- components/project-companion/
-|   |   |   |   |-- data-access/lesson-guide.ts
-|   |   |   |   |-- models/guide-message.ts
-|   |   |   |   `-- voice/guide-voice.ts
-|   |   |   `-- lessons/
-|   |   |       |-- components/
-|   |   |       |   `-- map-illustration/
-|   |   |       |-- data/
-|   |   |       |   `-- sample-lessons.ts
-|   |   |       |-- data-access/
-|   |   |       |   `-- lesson-repository.ts
-|   |   |       |-- models/
-|   |   |       |   `-- lesson.ts
-|   |   |       |-- pages/
-|   |   |       |   |-- lesson-list/
-|   |   |       |   `-- lesson-detail/
-|   |   |       `-- lessons.routes.ts
-|   |   |-- app-root/app-root.ts
+|   |   |   |-- panorama/
+|   |   |   |   |-- pages/panorama-page/
+|   |   |   |   `-- types/pannellum.d.ts
+|   |   |   `-- questions/
+|   |   |       |-- data/demo-question-sets.ts
+|   |   |       `-- pages/
+|   |   |           |-- question-bank-page/
+|   |   |           |-- questions-page/
+|   |   |           `-- teacher-page/
 |   |   |-- app.config.ts
 |   |   `-- app.routes.ts
 |   |-- index.html
@@ -69,8 +76,12 @@ local-history-geography/
 `-- README.md
 ```
 
-The tree shows the application architecture; generated output, dependencies,
-editor settings, and TypeScript configuration files are omitted for clarity.
+Each page folder contains its component, HTML template, styles, and tests when
+present. Supporting styles such as game controls and test results stay beside
+the page that owns them. Generated output, dependencies, editor settings, and
+TypeScript configuration files are omitted for clarity. App configuration,
+feature route definitions, and CLI configuration remain at their conventional
+entry points; they do not need individual folders.
 
 ## Responsibilities
 
@@ -87,17 +98,25 @@ subscriptions, file uploads/downloads, and an account-free local emulator setup.
 | `features/lessons/data` | Bundled sample lessons |
 | `features/lessons/data-access` | Lesson-specific database queries |
 | `features/companion` | Floating character, lesson passage retrieval, and browser read-aloud |
-| `features/map` | Interactive Đồng Nai SVG map, search, zoom, and region dialogs at `/map` |
+| `features/map` | Interactive Đồng Nai SVG map, search, zoom, and region previews at `/map` |
+| `features/games/pages`, `features/questions/pages` | Game/test catalogs, players, teacher imports, and question-bank pages |
+| `features/books/pages`, `features/panorama/pages` | PDF library/reader and spherical 360° viewer |
+| Feature `data`, `utils`, `types`, `config` folders | Sample data, pure helpers, third-party declarations, and feature configuration |
+| `shared/components/catalog-card` | Native link/button cards with reused layout, interaction, focus, and reduced-motion styles |
 | `firebase` | Local Firebase rule files, referenced by `firebase.json` |
-| `public` | Files copied directly into the built application |
+| `public` | Static assets copied directly into the built application; illustrations are decorative, not place photographs |
 | `src/styles.scss` | Bootstrap import and global styles |
 
 ## Dependency direction
 
 The app shell hosts routed features. Features can use core infrastructure; core
 does not import lesson pages or models. Data access owns database queries, while
-pages own rendering and user interaction. The existing pages use sample content;
-the repository is ready for the later live-data integration.
+pages own rendering and user interaction. Lessons still use labeled sample
+content; books, panoramas, published tests, and games use Firebase catalogs.
+The shared `CatalogCard` component is imported by each lazy catalog page. Its
+attribute selector preserves native links/buttons and applies common card styles
+without adding a wrapper or increasing the initial global stylesheet. Page
+styles own their specific content and layout.
 
 Root routing lazy-loads the lessons feature. Feature routing lazy-loads its pages.
 The existing URLs stay `/` for the library and `/lessons/:id` for a lesson.
@@ -115,5 +134,6 @@ The `/map` route separately lazy-loads the Đồng Nai map; geometry is fetched 
 6. Use explicit imports and standalone components; a new folder does not need an
    NgModule or an `index.ts` barrel.
 
-No authentication, guards, interceptors, or global state framework are needed for
-the current account-free application. Add them when a concrete feature needs them.
+Students use the application without accounts. Teacher publishing and private
+question banks require Firebase Authentication and server-enforced access. The
+folder reorganization preserves these permissions and all existing public URLs.

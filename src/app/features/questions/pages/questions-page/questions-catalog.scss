@@ -1,0 +1,23 @@
+.set-grid,
+.demo-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 16rem), 1fr));
+  gap: 1.25rem;
+  margin: 1.6rem 0;
+}
+
+.demo-block {
+  margin-top: 2.5rem;
+  padding-top: 2rem;
+  border-top: 1px solid #bdcdb1;
+}
+
+.demo-copy {
+  max-width: 42rem;
+}
+
+.demo-copy h3 {
+  margin: .4rem 0;
+  font-size: 1.4rem;
+  font-weight: 900;
+}

@@ -2,6 +2,7 @@ import { inject, Injectable } from '@angular/core';
 import { FirebaseStorageService } from './firebase-storage.service';
 import { RealtimeDatabaseService } from './realtime-database.service';
 import { useFirebaseEmulators } from './firebase-emulators';
+import { PublicCatalogContext } from '../../shared/data-access/public-catalog-context';
 
 export type MediaKind = 'book' | 'panorama';
 export interface MediaAsset {
@@ -43,14 +44,17 @@ export function validateMediaRecord(id: string, value: unknown, kind: MediaKind)
 
 @Injectable({ providedIn: 'root' })
 export class MediaLibraryService {
+  private readonly publicContext = inject(PublicCatalogContext);
   private readonly storage = inject(FirebaseStorageService);
   private readonly database = inject(RealtimeDatabaseService);
   private readonly catalogs = new Map<MediaKind, Promise<MediaAsset[]>>();
   private readonly urls = new Map<string, Promise<string>>();
 
   async list(kind: MediaKind): Promise<MediaAsset[]> {
-    if (MEDIA_CLOUD_ENABLED || useFirebaseEmulators()) return this.refreshPublished(kind);
-    return DEMO_MEDIA.filter(asset => asset.kind === kind);
+    const assets = MEDIA_CLOUD_ENABLED || useFirebaseEmulators()
+      ? await this.refreshPublished(kind) : DEMO_MEDIA.filter(asset => asset.kind === kind);
+    this.publicContext.replace(kind === 'book' ? 'books' : 'panorama', assets);
+    return assets;
   }
 
   /** One bounded query per kind per app session; explicit invalidation after uploads. */

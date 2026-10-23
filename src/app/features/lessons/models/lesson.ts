@@ -17,6 +17,6 @@ export interface Lesson {
   illustration: string;
   color: 'mint' | 'peach' | 'lavender' | 'sky';
   learningGoals: string[];
-  sections: { heading: string; body: string; tryIt: string }[];
+  sections: { heading: string; body: string; tryIt: string; bodyVi?: string; tryItVi?: string }[];
   quiz: QuizQuestion[];
 }

@@ -5,9 +5,9 @@ This Angular app helps elementary school students and teachers explore Đồng N
 ## Workflow and efficient use of Codex
 
 - Read this file at the start of each task. Turn each request into a small concrete implementation and acceptance checklist; resolve routine design choices independently.
-- The user's preferred team is Astra at light reasoning for coordination and QA, and Sol at high reasoning for implementation. Use those settings only when the runtime exposes them. Do not claim to switch the current leader. In this session, workers use `gpt-6-sol` with `high` reasoning and independent QA uses `gpt-6-astra` with `low` (the available light setting); the leader cannot be changed mid-conversation.
-- For substantial independent features, delegate bounded tasks with explicit file ownership. Share only necessary context. Avoid agents for tiny edits, duplicate investigations, or overlapping changes.
-- The leader reviews integration, accessibility, loading/error states, Firebase costs, and tests. Send concrete defects back to the responsible worker and verify the fix before completion.
+- Roadmap: for feature planning, implementation, or progress checks, read [docs/roadmap.md](docs/roadmap.md); update its task checkboxes and completion log after verifying related work.
+- Consider a bounded helper only when independent work or review materially improves the result, following the shared delegation criteria. Give any helper explicit file ownership and only the necessary context.
+- Review integration, accessibility, loading/error states, Firebase costs, and tests. Correct concrete defects and verify fixes before completion.
 - Search with `rg`, batch independent reads, reuse existing services/components, lazy-load heavy viewers, and run focused checks first. Run a production build and relevant tests once after integration; repeat only for changes or failures.
 - Keep progress updates concise. Record durable user requirements here; put task-specific details in documentation. These practices reduce unnecessary work but cannot guarantee a particular Codex quota or token cost.
 
@@ -38,3 +38,15 @@ This Angular app helps elementary school students and teachers explore Đồng N
 - Store files in Storage and metadata in Realtime Database, never base64 PDFs/images in the database. Limit PDFs to 10 MiB and panoramas to 5 MiB; validate signatures, image dimensions, catalog sizes, and paths.
 - Use emulator uploads during development. Production writes require an authenticated content editor custom claim and matching rules. Client file caps reduce usage but cannot guarantee project-wide free quotas or stop abusive traffic; billing alerts are not hard spending caps.
 - Preserve student privacy and existing lesson security rules. Document CORS and deployment prerequisites. Do not deploy or change paid services without explicit authorization.
+
+
+<!-- BEGIN LOCAL ENGINEERING RULES -->
+## Engineering rules for this project
+
+Follow [shared engineering defaults](C:/Users/KATANA/.codex/AGENTS.md): one agent by default, focused verification, and selective independent review. Preserve the project-specific requirements here and in scoped instructions.
+
+Detected application/solution locations: `.`. Reinspect manifests when working here; versions and scripts can change.
+
+- Angular: inspect package.json, angular.json, tsconfig files and nearby components/services before editing. Use angular-developer with APIs supported by the installed version. Preserve the current NgModule/standalone, RxJS/state-management, forms and styling conventions. Reuse existing components/tokens; match responsive and loading/error/focus states. Verify subscription cleanup and concurrency semantics. Use existing build/test scripts from the application directory; do not add a test runner or perform a framework migration as incidental cleanup.
+- Record the relevant working-tree baseline; preserve unrelated edits. Choose focused behavioral checks plus required project validation, and inspect the affected UI when applicable. Documentation-only changes do not require application builds. Report checks actually run and any limitations.
+<!-- END LOCAL ENGINEERING RULES -->

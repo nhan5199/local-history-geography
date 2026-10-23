@@ -3,22 +3,22 @@ import type { Routes } from '@angular/router';
 export const routes: Routes = [
   {
     path: 'teacher/bank',
-    loadComponent: () => import('./features/questions/question-bank-page').then(module => module.QuestionBankPage),
+    loadComponent: () => import('./features/questions/pages/question-bank-page/question-bank-page').then(module => module.QuestionBankPage),
     title: 'Ngân hàng câu hỏi · Đồng Nai ơi!',
   },
   {
     path: 'questions',
-    loadComponent: () => import('./features/questions/questions-page').then(module => module.QuestionsPage),
+    loadComponent: () => import('./features/questions/pages/questions-page/questions-page').then(module => module.QuestionsPage),
     title: 'Câu hỏi ôn tập · Đồng Nai ơi!',
   },
   {
     path: 'games',
-    loadComponent: () => import('./features/games/games-page').then(module => module.GamesPage),
+    loadComponent: () => import('./features/games/pages/games-page/games-page').then(module => module.GamesPage),
     title: 'Sân chơi kiến thức · Đồng Nai ơi!',
   },
   {
     path: 'teacher',
-    loadComponent: () => import('./features/questions/teacher-page').then(module => module.TeacherPage),
+    loadComponent: () => import('./features/questions/pages/teacher-page/teacher-page').then(module => module.TeacherPage),
     title: 'Góc giáo viên · Đồng Nai ơi!',
   },
   {
@@ -27,7 +27,7 @@ export const routes: Routes = [
   },
   {
     path: 'panorama',
-    loadComponent: () => import('./features/panorama/panorama-page').then(module => module.PanoramaPage),
+    loadComponent: () => import('./features/panorama/pages/panorama-page/panorama-page').then(module => module.PanoramaPage),
     title: 'Khám phá 360° · Our Place',
   },
   {

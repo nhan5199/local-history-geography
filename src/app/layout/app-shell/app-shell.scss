@@ -12,8 +12,9 @@
 .site-header {
   position: relative;
   z-index: 10;
-  background: #fffaf0;
-  border-bottom: 2px solid #e5dabc;
+  background: #fffcf2;
+  border-bottom: 3px solid #355a49;
+  box-shadow: 0 5px 0 #e5dabc80;
 }
 .header-inner {
   min-height: 82px;
@@ -64,12 +65,15 @@
   gap: 0.25rem;
 }
 .main-nav a {
-  display: inline-block;
-  padding: 0.58rem 0.85rem;
+  display: inline-flex;
+  align-items: center;
+  gap: .35rem;
+  min-height: 46px;
+  padding: 0.58rem 0.65rem;
   border: 2px solid transparent;
-  border-radius: 100px;
+  border-radius: 15px;
   color: #456554;
-  font-size: 0.9rem;
+  font-size: 0.85rem;
   font-weight: 900;
   text-decoration: none;
   white-space: nowrap;
@@ -82,8 +86,9 @@
   transform: translateY(-2px);
 }
 .main-nav a.active {
-  border-color: #d5e0bb;
-  background: #eaf1d9;
+  border-color: #355a49;
+  box-shadow: 0 3px 0 #355a49;
+  background: #ffdf83;
   color: #285c43;
 }
 .site-footer {
@@ -143,3 +148,11 @@
     transform: none;
   }
 }
+
+.nav-icon { display: inline-grid; place-items: center; width: 22px; height: 24px; font-size: 1.1rem; color: #85532d; }
+.skip-link { position: fixed; top: 8px; left: 8px; z-index: 100; padding: 12px 20px; background: #fffdf5; color: #294e42; border: 3px solid #294e42; border-radius: 16px; transform: translateY(-160%); }
+.skip-link:focus { transform: none; }
+.brand-mark { transition: rotate .25s; }
+.brand:hover .brand-mark { rotate: -12deg; }
+.main-nav a:active { transform: translateY(2px); box-shadow: none; }
+@media (prefers-reduced-motion: reduce) { .brand-mark { transition: none; } .brand:hover .brand-mark { rotate: none; } .main-nav a:active { transform: none; } }
